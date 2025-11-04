@@ -1,1 +1,453 @@
-
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Sellmyfy - Sistema de Vendas Automáticas | Venda 24/7 Sem Redes Sociais</title>
+  <meta name="description" content="Sistema Sellmyfy: Vendas 100% automáticas sem criar conteúdo ou aparecer. Funis validados, produtos prontos e suporte com IA. Resultados reais no piloto automático.">
+  <meta name="keywords" content="vendas automáticas, marketing digital, funis de vendas, sellmyfy, low ticket, automação, vendas online">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root{
+      --primary-red:#ff2323;
+      --deep-black:#000000;
+      --dark-black:#060606;
+      --mid-black:#0e0e0e;
+      --white:#ffffff;
+      --light-grey:#e9ecef;
+      --dark-grey:#6c757d;
+      --box-shadow:0 4px 18px rgba(0,0,0,0.20);
+      --glass:rgba(255,255,255,0.05);
+      --border:rgba(255,255,255,0.10);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      font-family:'Montserrat',Arial,sans-serif;
+      background:radial-gradient(1200px 800px at 50% -10%,rgba(255,35,35,0.06),transparent 60%),var(--deep-black);
+      color:var(--white);
+      min-height:100vh;
+      line-height:1.6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+    .header-bar{
+      background:linear-gradient(135deg,var(--primary-red) 0%,#cc0000 100%);
+      color:var(--white);
+      padding:12px 0 10px 0;
+      text-align:center;
+      font-size:1rem;
+      font-weight:700;
+      position:sticky;
+      top:0;
+      z-index:50;
+      box-shadow:0 10px 28px rgba(255,35,35,0.22);
+    }
+    .header-timer{
+      font-size:1.2rem;
+      font-weight:800;
+      margin-top:6px;
+      padding:8px 16px;
+      border-radius:10px;
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      border:1px solid rgba(255,255,255,0.28);
+      background:linear-gradient(180deg,rgba(0,0,0,0.45),rgba(0,0,0,0.65));
+      text-shadow:0 0 6px rgba(255,255,255,0.28);
+      box-shadow:inset 0 0 18px rgba(255,255,255,0.06),0 6px 20px rgba(0,0,0,0.28);
+      letter-spacing:0.04em;
+      font-variant-numeric:tabular-nums;
+      user-select:none;
+    }
+    .header-timer .dot{
+      width:8px;height:8px;border-radius:50%;
+      background:#fff;
+      box-shadow:0 0 10px rgba(255,255,255,0.8),0 0 14px rgba(255,35,35,0.8);
+      animation:dotPulse 1.6s infinite ease-in-out;
+    }
+    @keyframes dotPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(0.7);opacity:0.6}}
+    .sub-bar{
+      background:var(--dark-black);
+      text-align:center;
+      padding:12px 0 10px 0;
+      font-size:0.95rem;
+      color:var(--primary-red);
+      font-weight:600;
+      border-bottom:1px solid #202020;
+    }
+    .container{
+      max-width:440px;
+      margin:25px auto;
+      background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0)),var(--mid-black);
+      border-radius:16px;
+      box-shadow:var(--box-shadow),0 20px 58px rgba(0,0,0,0.38);
+      padding:30px 25px;
+      text-align:center;
+      border:1px solid #1f1f1f;
+      backdrop-filter:saturate(120%) blur(2px);
+    }
+    .video-box{
+      margin:-45px auto 20px auto;
+      width:100%;
+      max-width:400px;
+      border-radius:14px;
+      overflow:hidden;
+      box-shadow:0 10px 30px rgba(255,35,35,0.18),0 12px 30px rgba(0,0,0,0.4);
+      background:#000;
+      aspect-ratio:16/9;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid var(--primary-red);
+      position:relative;
+    }
+    .video-box::after{
+      content:'VÍDEO EXPLICATIVO EXCLUSIVO';
+      position:absolute;
+      top:-12px;left:50%;
+      transform:translateX(-50%);
+      background:var(--primary-red);
+      color:#fff;
+      padding:4px 12px;
+      border-radius:15px;
+      font-size:0.7rem;
+      font-weight:600;
+      box-shadow:0 4px 10px rgba(255,35,35,0.3);
+    }
+    .video-box video{width:100%;height:100%;object-fit:cover;display:block}
+    .result-image{
+      width:100%;
+      max-width:380px;
+      border-radius:12px;
+      margin:15px auto;
+      box-shadow:0 6px 20px rgba(255,35,35,0.18),0 10px 26px rgba(0,0,0,0.48);
+      border:1px solid var(--primary-red);
+    }
+    .results-grid{display:flex;flex-direction:column;gap:15px;margin:20px 0}
+    .container h1{
+      color:var(--primary-red);
+      margin-bottom:15px;
+      font-weight:800;
+      font-size:1.4rem;
+      line-height:1.3;
+    }
+    .container p{font-size:0.9rem;color:var(--light-grey);margin-bottom:18px;text-align:left}
+    .highlight{color:var(--primary-red);font-weight:700}
+    .scarcity-section{
+      background:linear-gradient(135deg,#0f0f0f 0%,#181818 100%);
+      padding:18px 0 14px 0;
+      border-radius:14px;
+      margin:0 auto 20px auto;
+      width:98%;
+      box-shadow:0 10px 26px rgba(255,35,35,0.14),inset 0 0 0 1px rgba(255,35,35,0.22);
+      border:2px solid var(--primary-red);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:10px;
+      position:relative;
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .scarcity-section::before{
+      content:'';
+      position:absolute;inset:0;
+      background:radial-gradient(800px 120px at 50% 0,rgba(255,35,35,0.14),transparent 70%);
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    .scarcity-section::after{
+      content:'';
+      position:absolute;left:0;right:0;top:0;height:3px;
+      background:linear-gradient(90deg,transparent,var(--primary-red),transparent);
+      animation:scan 2.2s linear infinite;
+    }
+    @keyframes scan{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+    .scarcity-title{font-size:0.95rem;color:var(--primary-red);font-weight:700;letter-spacing:.02em}
+    .scarcity-info{font-size:0.92rem;color:var(--white);font-weight:600}
+    .slots-left{
+      color:var(--primary-red);
+      font-weight:800;
+      font-size:1rem;
+      background:rgba(255,35,35,0.08);
+      border-radius:8px;
+      padding:8px 16px;
+      display:inline-block;
+      margin-top:4px;
+      border:1px solid var(--primary-red);
+      letter-spacing:.02em;
+      user-select:none;
+      box-shadow:inset 0 0 18px rgba(255,35,35,0.10);
+      animation:slotBlink 2.2s infinite steps(2,end);
+    }
+    @keyframes slotBlink{50%{opacity:.86}}
+    .countdown{
+      font-family:'Montserrat',Arial,sans-serif;
+      font-size:1.9rem;
+      color:var(--primary-red);
+      font-weight:900;
+      background:conic-gradient(from 0deg,var(--primary-red) 0 var(--p),rgba(255,255,255,0.05) var(--p) 100%);
+      border-radius:14px;
+      padding:12px 28px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:2px solid var(--primary-red);
+      box-shadow:inset 0 0 14px rgba(255,35,35,0.32),0 0 0 6px rgba(255,35,35,0.06);
+      margin:6px 0 8px 0;
+      text-shadow:0 0 7px rgba(255,35,35,0.42);
+      letter-spacing:.04em;
+      font-variant-numeric:tabular-nums;
+      min-width:210px;
+      transition:filter .3s ease,transform .3s ease;
+      --p:0%;
+    }
+    .countdown[data-live="1"]{filter:drop-shadow(0 6px 22px rgba(255,35,35,.22))}
+    .topics{text-align:left;margin:20px 0 25px 0}
+    .topics-title{
+      font-weight:800;color:var(--white);margin-bottom:15px;font-size:1.05rem;text-align:center
+    }
+    .topics ul{list-style:none;padding-left:0;font-size:0.85rem}
+    .topics li{margin-bottom:14px;padding-left:26px;position:relative;color:var(--light-grey)}
+    .topics li::before{
+      content:'\f058';
+      font-family:'Font Awesome 6 Free';
+      font-weight:900;
+      color:var(--primary-red);
+      position:absolute;left:0;top:2px;font-size:0.95rem
+    }
+    .topics li strong{color:var(--primary-red);font-weight:700}
+    .features-box{
+      background:linear-gradient(135deg,#101010 0%,#191919 100%);
+      border-radius:14px;
+      box-shadow:0 10px 24px rgba(0,0,0,.38),inset 0 0 0 1px #2b2b2b;
+      border:1px solid #2b2b2b;
+      padding:18px 14px 14px 14px;
+      margin-bottom:18px;
+      text-align:left;
+    }
+    .features-box h3{
+      color:var(--primary-red);
+      margin-bottom:10px;
+      font-size:0.95rem;
+      font-weight:700;
+      display:flex;align-items:center;gap:8px
+    }
+    .features-list{list-style:none;padding:0;margin:0;color:var(--light-grey);font-size:0.85rem}
+    .features-list li{margin-bottom:9px;padding-left:22px;position:relative}
+    .features-list li:before{
+      content:'\f00c';font-family:'Font Awesome 6 Free';font-weight:900;color:var(--primary-red);
+      position:absolute;left:0;top:2px;font-size:.8rem
+    }
+    .ai-section{
+      background:linear-gradient(135deg,#121212 0%,#1e1e1e 100%);
+      border-radius:14px;
+      box-shadow:0 10px 24px rgba(255,35,35,0.12),inset 0 0 0 1px rgba(255,35,35,0.12);
+      border:1px solid var(--primary-red);
+      padding:18px 14px 14px 14px;
+      margin:18px 0;
+      text-align:center;
+    }
+    .ai-title{color:var(--primary-red);font-size:1.05rem;font-weight:800;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px}
+    .ai-content{color:var(--white);font-size:0.9rem;text-align:center}
+    .ai-highlight{color:var(--primary-red);font-weight:700}
+    .cta-block{margin:25px 0 20px 0;display:flex;flex-direction:column;align-items:center;gap:12px}
+    .cta-button{
+      display:inline-block;
+      background:linear-gradient(135deg,var(--primary-red) 0%,#cc0000 50%,var(--primary-red) 100%);
+      color:var(--white);
+      font-weight:800;
+      font-size:1.05rem;
+      border:none;border-radius:12px;
+      padding:16px 40px;text-decoration:none;
+      box-shadow:0 10px 28px rgba(255,35,35,0.42),0 0 10px rgba(255,35,35,0.35) inset;
+      cursor:pointer;position:relative;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease,filter .25s ease;
+      text-transform:uppercase;
+      animation:ctaPulse 2.2s infinite;
+      will-change:transform,filter;
+    }
+    @keyframes ctaPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.03)}}
+    .cta-button:after{
+      content:"";position:absolute;left:-120%;top:0;width:120%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.45),transparent);
+      transition:left .9s
+    }
+    .cta-button:hover:after{left:120%}
+    .cta-button:hover{box-shadow:0 14px 34px rgba(255,35,35,0.55),0 0 14px rgba(255,35,35,0.42) inset;transform:translateY(-1px)}
+    .cta-button:active{transform:translateY(0)}
+    .obs{color:var(--dark-grey);font-size:0.8rem;margin-top:15px;text-align:center;line-height:1.5;border-top:1px solid #2b2b2b;padding-top:12px}
+    @media (max-width:600px){
+      .container{padding:18px 12px;margin:12px 8px}
+      .video-box{max-width:100%;margin-top:-30px}
+      .container h1{font-size:1.2rem}
+      .scarcity-title{font-size:0.9rem}
+      .countdown{font-size:1.6rem;padding:10px 18px;min-width:180px}
+      .header-timer{font-size:1.05rem;padding:6px 12px}
+      .cta-button{width:100%;font-size:0.95rem;padding:14px 0}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;scroll-behavior:auto !important}
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+    <i class="fas fa-bolt"></i> VAGAS SE ENCERRAM EM: 
+    <div class="header-timer" id="headerTimer"><span class="dot" aria-hidden="true"></span><span id="headerTimeText">00:30:00</span></div>
+  </div>
+  <div class="sub-bar">
+    SISTEMA 100% AUTOMÁTICO - VENDA SEM APARECER OU CRIAR CONTEÚDO
+  </div>
+  <div class="container">
+    <div class="video-box">
+      <video controls muted playsinline preload="metadata">
+        <source src="demonstracao.mp4" type="video/mp4">
+        <source src="demonstracao.webm" type="video/webm">
+        <source src="demonstracao.ogg" type="video/ogg">
+        Seu navegador não suporta o elemento de vídeo.
+      </video>
+    </div>
+    <div class="results-grid">
+      <img src="resultado1.png" alt="Resultados Comprovados Sellmyfy - Exemplo 1" class="result-image">
+      <img src="resultado2.png" alt="Resultados Comprovados Sellmyfy - Exemplo 2" class="result-image">
+    </div>
+    <h1>Sistema Sellmyfy: Vendas Automáticas 24/7 Sem Redes Sociais</h1>
+    <p>
+      Cansado de ser refém de algoritmos, criar conteúdo que não converte, sofrer bloqueios ou ter que se expor para vender?
+    </p>
+    <p>
+      <span class="highlight">O Sellmyfy chegou para revolucionar seu negócio digital.</span> Um sistema completo de vendas automáticas que funciona enquanto você dorme, trabalha ou aproveita sua vida.
+    </p>
+    <p>
+      Imagine acordar com vendas acontecendo automaticamente, <span class="highlight">sem precisar criar stories, fazer lives ou enviar DMs.</span> Apenas resultados consistentes todos os dias, no piloto automático.
+    </p>
+    <div class="scarcity-section" id="scarcity">
+      <div class="scarcity-title"><i class="fas fa-fire"></i> ÚLTIMAS VAGAS COM ACESSO IMEDIATO</div>
+      <div class="scarcity-info">Tempo Restante Para Inscrições:</div>
+      <div class="countdown" id="timer" data-live="1">30:00</div>
+      <div class="slots-left" id="slots">RESTAM APENAS 6 VAGAS!</div>
+    </div>
+    <div class="ai-section">
+      <div class="ai-title"><i class="fas fa-robot"></i> SUPORTE DIÁRIO COM IA SELLMYFY</div>
+      <div class="ai-content">
+        <span class="ai-highlight">Você não estará sozinho nessa jornada!</span><br>
+        Nosso grupo exclusivo opera <span class="ai-highlight">comigo todos os dias</span> usando a Inteligência Artificial Sellmyfy para maximizar seus resultados. 
+        <span class="ai-highlight">Suporte em tempo real, estratégias atualizadas e acompanhamento personalizado.</span>
+      </div>
+    </div>
+    <div class="topics">
+      <div class="topics-title"><i class="fas fa-bullseye"></i> PROBLEMAS QUE RESOLVEMOS PARA VOCÊ:</div>
+      <ul>
+        <li><strong>Algoritmos Imprevisíveis:</strong> Chega de ser refém do Instagram, TikTok e Facebook</li>
+        <li><strong>Medo da Exposição:</strong> Venda sem mostrar seu rosto ou fazer stories</li>
+        <li><strong>Bloqueios e Limitações:</strong> Elimine o risco de perder tudo da noite para o dia</li>
+        <li><strong>Tempo Perdido Criando Conteúdo:</strong> Liberte-se de horas de gravação e edição</li>
+        <li><strong>Rejeição e Frustração:</strong> Acabe com DMs ignoradas e "nãos" constantes</li>
+        <li><strong>Dependência de Seguidores:</strong> Venda sem precisar de audiência gigante</li>
+        <li><strong>Insegurança Financeira:</strong> Tenha um sistema previsível e consistente</li>
+      </ul>
+    </div>
+    <div class="features-box">
+      <h3><i class="fas fa-cogs"></i> COMO O SISTEMA FUNCIONA:</h3>
+      <ul class="features-list">
+        <li><strong>Configuração Rápida:</strong> Menos de 2 horas com suporte especializado</li>
+        <li><strong>Produtos Prontos:</strong> Acesso a produtos de alta conversão 100% validados</li>
+        <li><strong>Funís Automatizados:</strong> Sequências que convertem 24/7 automaticamente</li>
+        <li><strong>Campanhas Testadas:</strong> Copies e estratégias que já funcionam</li>
+        <li><strong>Automação Completa:</strong> Do primeiro contato ao pós-venda</li>
+        <li><strong>Suporte Dedicado:</strong> Equipe para garantir seu sucesso</li>
+        <li><strong>Atualizações Constantes:</strong> Novas estratégias regularmente</li>
+        <li><strong>Comunidade Exclusiva:</strong> Rede de empreendedores automáticos</li>
+      </ul>
+    </div>
+    <div class="features-box">
+      <h3><i class="fas fa-gem"></i> O QUE VOCÊ RECEBE HOJE:</h3>
+      <ul class="features-list">
+        <li>Acesso vitalício à plataforma Sellmyfy com ofertas 100% validadas</li>
+        <li>15+ produtos digitais prontos para vender imediatamente</li>
+        <li>7 funis de vendas completamente automatizados e comprovados</li>
+        <li>23 campanhas pré-configuradas (copy & paste)</li>
+        <li>Treinamento completo de configuração passo a passo</li>
+        <li>Suporte prioritário por 30 dias com nossa equipe</li>
+        <li>Grupo VIP de resultados onde ninguém sai perdendo</li>
+        <li>Método de escala para múltiplos produtos simultâneos</li>
+        <li>Estratégias avançadas de retenção de clientes</li>
+        <li>Templates de suporte automatizado profissionais</li>
+      </ul>
+    </div>
+    <div class="ai-section">
+      <div class="ai-title"><i class="fas fa-hands-helping"></i> SUPORTE DIRETO COMIGO!</div>
+      <div class="ai-content">
+        <span class="ai-highlight">Eu mesmo operarei com você no grupo exclusivo todos os dias!</span><br>
+        Usando nossa Inteligência Artificial Sellmyfy, otimizaremos suas campanhas juntos com funis fortes e estratégias validadas. 
+        <span class="ai-highlight">Acompanhamento diário, ajustes em tempo real e suporte personalizado para seu sucesso! Aqui ninguém sai perdendo!</span>
+      </div>
+    </div>
+    <div class="cta-block">
+      <button class="cta-button" id="ctaBtn" onclick="getAccess()">
+        <i class="fas fa-rocket"></i> GARANTIR MEU ACESSO AGORA
+      </button>
+    </div>
+    <div class="obs">
+      <i class="fas fa-exclamation-triangle"></i> <strong>ATENÇÃO:</strong> Esta é a única vez que o Sellmyfy será aberto neste formato.<br>
+      Vagas extremamente limitadas - Não haverá reabertura ou extensão de prazo!
+    </div>
+  </div>
+  <script>
+    const headerTimeText=document.getElementById('headerTimeText');
+    const headerTimerEl=document.getElementById('headerTimer');
+    const timerEl=document.getElementById('timer');
+    const slotsEl=document.getElementById('slots');
+    const ctaBtn=document.getElementById('ctaBtn');
+    const DURATION_SECONDS=30*60;
+    const startTs=Date.now();
+    const deadlineHeader=startTs+DURATION_SECONDS*1000;
+    const deadlineMain=startTs+DURATION_SECONDS*1000;
+    function fmtHMS(ms){
+      const t=Math.max(0,Math.floor(ms/1000));
+      const h=String(Math.floor(t/3600)).padStart(2,'0');
+      const m=String(Math.floor((t%3600)/60)).padStart(2,'0');
+      const s=String(t%60).padStart(2,'0');
+      return `${h}:${m}:${s}`;
+    }
+    function fmtMS(ms){
+      const t=Math.max(0,Math.floor(ms/1000));
+      const m=String(Math.floor(t/60)).padStart(2,'0');
+      const s=String(t%60).padStart(2,'0');
+      return `${m}:${s}`;
+    }
+    function setArcProgress(el,remain,total){
+      const p=(1-(remain/total))*100;
+      el.style.setProperty('--p',`${Math.min(100,Math.max(0,p))}%`);
+    }
+    function tickOnce(){
+      const now=Date.now();
+      const remainHeader=Math.max(0,deadlineHeader-now);
+      const remainMain=Math.max(0,deadlineMain-now);
+      headerTimeText.textContent=fmtHMS(remainHeader);
+      timerEl.textContent=fmtMS(remainMain);
+      setArcProgress(timerEl,remainMain,DURATION_SECONDS*1000);
+      if(remainHeader<=0){headerTimerEl.style.background='rgba(255,0,0,0.25)'}
+      if(remainMain<=0){
+        slotsEl.textContent='VAGAS ESGOTADAS!';
+        ctaBtn.disabled=true;
+        ctaBtn.style.opacity='0.6';
+        ctaBtn.style.cursor='not-allowed';
+        ctaBtn.textContent='ACESSO ENCERRADO';
+        ctaBtn.style.animation='none';
+        timerEl.dataset.live='0';
+        clearInterval(mainInterval);
+        clearInterval(headInterval);
+      }
+    }
+    const headInterval=setInterval(tickOnce,1000);
+    const mainInterval=setInterval(tickOnce,1000);
+    tickOnce();
+    function getAccess(){
+      window.location.href='https://go.tribopay.com.br/0zr2wtr5u4';
+    }
+  </script>
+</body>
+</html>
