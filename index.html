@@ -8,6 +8,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preload" as="image" href="resultado1.png">
+  <link rel="preload" as="image" href="resultado2.png">
+  <link rel="preload" as="image" href="resultado3.png">
+  <link rel="preload" as="video" href="demonstracao.mp4" type="video/mp4">
   <style>
     :root {
       --primary-red: #ff1f1f;
@@ -171,6 +175,21 @@
       object-fit: contain;
       background: #000;
     }
+    .video-error {
+      position: absolute;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      background: rgba(0,0,0,0.6);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.9rem;
+      text-align: center;
+      backdrop-filter: blur(2px);
+      border-radius: 12px;
+    }
     .result-image {
       width: 100%;
       max-width: 420px;
@@ -235,10 +254,7 @@
       content: "";
       position: absolute;
       inset: -1px;
-      background:
-        radial-gradient(400px 110px at 50% -50px, rgba(255, 31, 31, 0.24), transparent 60%),
-        radial-gradient(300px 100px at 80% 120%, rgba(255, 31, 31, 0.12), transparent 60%),
-        radial-gradient(300px 100px at 20% 120%, rgba(255, 31, 31, 0.12), transparent 60%);
+      background: radial-gradient(400px 110px at 50% -50px, rgba(255, 31, 31, 0.24), transparent 60%), radial-gradient(300px 100px at 80% 120%, rgba(255, 31, 31, 0.12), transparent 60%), radial-gradient(300px 100px at 20% 120%, rgba(255, 31, 31, 0.12), transparent 60%);
       pointer-events: none;
       mix-blend-mode: screen;
     }
@@ -540,30 +556,23 @@
   </div>
   <div class="container">
     <div class="content-wrap">
-      <div class="video-box">
-        <video id="promoVideo" src="./demonstracao.mp4" controls preload="metadata" playsinline poster="resultado1.png" aria-label="Sistema Sellmyfy - Vendas Automáticas"></video>
+      <div class="video-box" id="videoBox">
+        <video id="promoVideo" controls preload="metadata" playsinline webkit-playsinline poster="resultado1.png" aria-label="Sistema Sellmyfy - Vendas Automáticas" controlslist="nodownload">
+          <source src="demonstracao.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+          <source src="demonstracao.webm" type="video/webm">
+          <source src="demonstracao.ogv" type="video/ogg">
+        </video>
+        <div class="video-error" id="videoError">Não foi possível reproduzir o vídeo neste dispositivo. Tente novamente ou utilize outra fonte.</div>
       </div>
-      
       <div class="results-grid">
         <img src="resultado1.png" alt="Resultados Comprovados Sellmyfy - Exemplo 1" class="result-image" loading="lazy" decoding="async">
         <img src="resultado2.png" alt="Resultados Comprovados Sellmyfy - Exemplo 2" class="result-image" loading="lazy" decoding="async">
         <img src="resultado3.png" alt="Resultados Comprovados Sellmyfy - Exemplo 3" class="result-image" loading="lazy" decoding="async">
       </div>
-      
       <h1>Sistema Sellmyfy: Vendas Automáticas 24/7 Sem Redes Sociais</h1>
-      
-      <p>
-        Cansado de ser refém de algoritmos, criar conteúdo que não converte, sofrer bloqueios ou ter que se expor para vender?
-      </p>
-      
-      <p>
-        <span class="highlight">O Sellmyfy chegou para revolucionar seu negócio digital.</span> Um sistema completo de vendas automáticas que funciona enquanto você dorme, trabalha ou aproveita sua vida.
-      </p>
-      
-      <p>
-        Imagine acordar com vendas acontecendo automaticamente, <span class="highlight">sem precisar criar stories, fazer lives ou enviar DMs.</span> Apenas resultados consistentes todos os dias, no piloto automático.
-      </p>
-
+      <p>Cansado de ser refém de algoritmos, criar conteúdo que não converte, sofrer bloqueios ou ter que se expor para vender?</p>
+      <p><span class="highlight">O Sellmyfy chegou para revolucionar seu negócio digital.</span> Um sistema completo de vendas automáticas que funciona enquanto você dorme, trabalha ou aproveita sua vida.</p>
+      <p>Imagine acordar com vendas acontecendo automaticamente, <span class="highlight">sem precisar criar stories, fazer lives ou enviar DMs.</span> Apenas resultados consistentes todos os dias, no piloto automático.</p>
       <div class="scarcity-section" aria-live="polite">
         <div class="scarcity-title"><i class="fas fa-fire" aria-hidden="true"></i> ÚLTIMAS VAGAS COM ACESSO IMEDIATO</div>
         <div class="scarcity-info">Tempo Restante Para Inscrições:</div>
@@ -572,7 +581,6 @@
         </div>
         <div class="slots-left" id="slots">RESTAM APENAS 6 VAGAS!</div>
       </div>
-
       <div class="ai-section">
         <div class="ai-title"><i class="fas fa-robot" aria-hidden="true"></i> SUPORTE DIÁRIO COM IA SELLMYFY</div>
         <div class="ai-content">
@@ -581,7 +589,6 @@
           <span class="ai-highlight">Suporte em tempo real, estratégias atualizadas e acompanhamento personalizado.</span>
         </div>
       </div>
-
       <div class="topics">
         <div class="topics-title"><i class="fas fa-bullseye" aria-hidden="true"></i> PROBLEMAS QUE RESOLVEMOS PARA VOCÊ:</div>
         <ul>
@@ -594,7 +601,6 @@
           <li><strong>Insegurança Financeira:</strong> Tenha um sistema previsível e consistente</li>
         </ul>
       </div>
-
       <div class="features-box">
         <h3><i class="fas fa-cogs" aria-hidden="true"></i> COMO O SISTEMA FUNCIONA:</h3>
         <ul class="features-list">
@@ -608,7 +614,6 @@
           <li><strong>Comunidade Exclusiva:</strong> Rede de empreendedores automáticos</li>
         </ul>
       </div>
-
       <div class="features-box">
         <h3><i class="fas fa-gem" aria-hidden="true"></i> O QUE VOCÊ RECEBE HOJE:</h3>
         <ul class="features-list">
@@ -624,7 +629,6 @@
           <li>Templates de suporte automatizado profissionais</li>
         </ul>
       </div>
-
       <div class="ai-section">
         <div class="ai-title"><i class="fas fa-hands-helping" aria-hidden="true"></i> SUPORTE DIRETO COMIGO!</div>
         <div class="ai-content">
@@ -633,20 +637,17 @@
           <span class="ai-highlight">Acompanhamento diário, ajustes em tempo real e suporte personalizado para seu sucesso! Aqui ninguém sai perdendo!</span>
         </div>
       </div>
-
       <div class="cta-block">
         <button class="cta-button" id="ctaBtn" onclick="getAccess()">
           <i class="fas fa-rocket" aria-hidden="true"></i> GARANTIR MEU ACESSO AGORA
         </button>
       </div>
-      
       <div class="obs">
         <i class="fas fa-exclamation-triangle" aria-hidden="true"></i> <strong>ATENÇÃO:</strong> Esta é a única vez que o Sellmyfy será aberto neste formato.<br>
         Vagas extremamente limitadas - Não haverá reabertura ou extensão de prazo!
       </div>
     </div>
   </div>
-  
   <script>
     let totalSeconds = 30 * 60;
     let headerTotalSeconds = 30 * 60;
@@ -655,16 +656,16 @@
     const slotsEl = document.getElementById('slots');
     const ctaBtn = document.getElementById('ctaBtn');
     const digitsNodes = () => Array.from(timerEl.querySelectorAll('.digit'));
-
+    const video = document.getElementById('promoVideo');
+    const videoBox = document.getElementById('videoBox');
+    const videoError = document.getElementById('videoError');
     function pad2(n) { return String(n).padStart(2, '0'); }
-
     function formatHMS(total) {
       const h = Math.floor(total / 3600);
       const m = Math.floor((total % 3600) / 60);
       const s = total % 60;
       return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
     }
-
     function updateHeaderTimer() {
       headerTimerEl.textContent = formatHMS(headerTotalSeconds);
       if (headerTotalSeconds <= 0) {
@@ -674,7 +675,6 @@
       }
       headerTotalSeconds--;
     }
-
     function setMainTimerDisplay(secondsLeft) {
       const m = pad2(Math.floor(secondsLeft / 60));
       const s = pad2(secondsLeft % 60);
@@ -693,7 +693,6 @@
         });
       }
     }
-
     function updateMainTimer() {
       setMainTimerDisplay(totalSeconds);
       if (totalSeconds <= 0) {
@@ -708,7 +707,6 @@
       }
       totalSeconds--;
     }
-
     function startTimers() {
       setMainTimerDisplay(totalSeconds);
       headerTimerEl.textContent = formatHMS(headerTotalSeconds);
@@ -721,16 +719,33 @@
         if (totalSeconds <= 0) clearInterval(mainInt);
       }, 1000);
     }
-
     function getAccess() {
       window.location.href = 'https://go.tribopay.com.br/0zr2wtr5u4';
     }
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.visibilityState === 'visible') return;
-    });
-
-    startTimers();
+    function ensurePlayableOnInteraction() {
+      videoBox.addEventListener('click', () => {
+        if (video.paused) {
+          const p = video.play();
+          if (p && typeof p.then === 'function') {
+            p.catch(() => {
+              video.muted = true;
+              video.play().catch(() => {
+                videoError.style.display = 'flex';
+              });
+            });
+          }
+        }
+      });
+      video.addEventListener('error', () => {
+        videoError.style.display = 'flex';
+      });
+      document.addEventListener('visibilitychange', () => {});
+    }
+    function init() {
+      startTimers();
+      ensurePlayableOnInteraction();
+    }
+    init();
   </script>
 </body>
 </html>
