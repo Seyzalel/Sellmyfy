@@ -173,7 +173,7 @@
       width: 100%;
       height: 100%;
       display: block;
-      object-fit: contain;
+      object-fit: cover;
       background: #000;
     }
     .video-error {
@@ -558,8 +558,8 @@
   <div class="container">
     <div class="content-wrap">
       <div class="video-box" id="videoBox">
-        <video id="promoVideo" controls preload="metadata" playsinline webkit-playsinline poster="resultado1.png" aria-label="Sistema Sellmyfy - Vendas Automáticas" controlslist="nodownload">
-          <source src="demonstracao.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+        <video id="promoVideo" controls autoplay muted loop playsinline preload="auto" poster="resultado1.png" aria-label="Sistema Sellmyfy - Vendas Automáticas" controlslist="nodownload">
+          <source src="demonstracao.mp4" type="video/mp4">
           <source src="demonstracao.webm" type="video/webm">
           <source src="demonstracao.ogv" type="video/ogg">
         </video>
@@ -586,7 +586,7 @@
         <div class="ai-title"><i class="fas fa-robot" aria-hidden="true"></i> SUPORTE DIÁRIO COM IA SELLMYFY</div>
         <div class="ai-content">
           <span class="ai-highlight">Você não estará sozinho nessa jornada!</span><br>
-          Nosso grupo exclusivo opera <span class="ai-highlight">comigo todos os dias</span> usando a Inteligência Artificial Sellmyfy para maximizar seus resultados. 
+          Nosso grupo exclusivo opera <span class="ai-highlight">comigo todos os dias</span> usando a Inteligência Artificial Sellmyfy para maximizar seus resultados.
           <span class="ai-highlight">Suporte em tempo real, estratégias atualizadas e acompanhamento personalizado.</span>
         </div>
       </div>
@@ -634,12 +634,12 @@
         <div class="ai-title"><i class="fas fa-hands-helping" aria-hidden="true"></i> SUPORTE DIRETO COMIGO!</div>
         <div class="ai-content">
           <span class="ai-highlight">Eu mesmo operarei com você no grupo exclusivo todos os dias!</span><br>
-          Usando nossa Inteligência Artificial Sellmyfy, otimizaremos suas campanhas juntos com funis fortes e estratégias validadas. 
+          Usando nossa Inteligência Artificial Sellmyfy, otimizaremos suas campanhas juntos com funis fortes e estratégias validadas.
           <span class="ai-highlight">Acompanhamento diário, ajustes em tempo real e suporte personalizado para seu sucesso! Aqui ninguém sai perdendo!</span>
         </div>
       </div>
       <div class="cta-block">
-        <button class="cta-button" id="ctaBtn" onclick="getAccess()">
+        <button class="cta-button" id="ctaBtn">
           <i class="fas fa-rocket" aria-hidden="true"></i> GARANTIR MEU ACESSO AGORA
         </button>
       </div>
@@ -650,31 +650,26 @@
     </div>
   </div>
   <script>
-    let totalSeconds = 30 * 60;
-    let headerTotalSeconds = 30 * 60;
+    const totalSecondsInitial = 30 * 60;
+    let totalSeconds = totalSecondsInitial;
+    let headerTotalSeconds = totalSecondsInitial;
     const timerEl = document.getElementById('timer');
     const headerTimerEl = document.getElementById('headerTimer');
     const slotsEl = document.getElementById('slots');
     const ctaBtn = document.getElementById('ctaBtn');
-    const digitsNodes = () => Array.from(timerEl.querySelectorAll('.digit'));
-    const video = document.getElementById('promoVideo');
-    const videoBox = document.getElementById('videoBox');
+    const promoVideo = document.getElementById('promoVideo');
     const videoError = document.getElementById('videoError');
-    function pad2(n) { return String(n).padStart(2, '0'); }
+    function pad2(n) {
+      return String(n).padStart(2, '0');
+    }
     function formatHMS(total) {
       const h = Math.floor(total / 3600);
       const m = Math.floor((total % 3600) / 60);
       const s = total % 60;
       return `${pad2(h)}:${pad2(m)}:${pad2(s)}`;
     }
-    function updateHeaderTimer() {
-      headerTimerEl.textContent = formatHMS(headerTotalSeconds);
-      if (headerTotalSeconds <= 0) {
-        headerTimerEl.textContent = "00:00:00";
-        headerTimerEl.style.background = 'rgba(255,0,0,0.28)';
-        return;
-      }
-      headerTotalSeconds--;
+    function digitsNodes() {
+      return Array.from(timerEl.querySelectorAll('.digit'));
     }
     function setMainTimerDisplay(secondsLeft) {
       const m = pad2(Math.floor(secondsLeft / 60));
@@ -692,6 +687,15 @@
             nodes[i].classList.add('bump');
           }
         });
+      } else {
+        timerEl.textContent = `${m}:${s}`;
+      }
+    }
+    function updateHeaderTimer() {
+      headerTimerEl.textContent = formatHMS(headerTotalSeconds);
+      if (headerTotalSeconds <= 0) {
+        headerTimerEl.textContent = "00:00:00";
+        headerTimerEl.style.background = 'rgba(255,0,0,0.28)';
       }
     }
     function updateMainTimer() {
@@ -704,46 +708,74 @@
         ctaBtn.style.cursor = 'not-allowed';
         ctaBtn.textContent = 'ACESSO ENCERRADO';
         ctaBtn.style.animation = 'none';
-        return;
       }
-      totalSeconds--;
     }
     function startTimers() {
       setMainTimerDisplay(totalSeconds);
       headerTimerEl.textContent = formatHMS(headerTotalSeconds);
       const headerInt = setInterval(() => {
+        headerTotalSeconds--;
         updateHeaderTimer();
-        if (headerTotalSeconds <= 0) clearInterval(headerInt);
+        if (headerTotalSeconds <= 0) {
+          clearInterval(headerInt);
+        }
       }, 1000);
       const mainInt = setInterval(() => {
+        totalSeconds--;
         updateMainTimer();
-        if (totalSeconds <= 0) clearInterval(mainInt);
+        if (totalSeconds <= 0) {
+          clearInterval(mainInt);
+        }
       }, 1000);
     }
     function getAccess() {
       window.location.href = 'https://go.tribopay.com.br/0zr2wtr5u4';
     }
-    function ensurePlayableOnInteraction() {
-      videoBox.addEventListener('click', () => {
-        if (video.paused) {
-          video.play().catch(() => {
-            video.muted = true;
-            video.play().catch(() => {
-              videoError.style.display = 'flex';
-            });
-          });
-        }
-      });
-      video.addEventListener('error', () => {
+    function ensureVideoPlayability() {
+      promoVideo.addEventListener('error', () => {
         videoError.style.display = 'flex';
       });
-      video.addEventListener('loadeddata', () => {
-        video.muted = false;
+      promoVideo.addEventListener('loadeddata', () => {
+        videoError.style.display = 'none';
+      });
+      promoVideo.addEventListener('play', () => {
+        videoError.style.display = 'none';
+      });
+      document.getElementById('videoBox').addEventListener('click', () => {
+        if (promoVideo.paused) {
+          promoVideo.muted = true;
+          const p = promoVideo.play();
+          if (p && p instanceof Promise) {
+            p.catch(() => {
+              promoVideo.muted = true;
+            });
+          }
+        } else {
+          promoVideo.pause();
+        }
+      });
+    }
+    function ensureImagesDecode() {
+      const imgs = Array.from(document.querySelectorAll('img'));
+      imgs.forEach(img => {
+        if (img.complete && img.naturalWidth === 0) {
+          img.src = img.src;
+        }
+        if ('decode' in img) {
+          img.decode().catch(() => {});
+        }
       });
     }
     function init() {
       startTimers();
-      ensurePlayableOnInteraction();
+      ensureVideoPlayability();
+      ensureImagesDecode();
+      ctaBtn.addEventListener('click', () => {
+        if (!ctaBtn.disabled) getAccess();
+      });
+      window.addEventListener('online', () => {
+        ensureImagesDecode();
+      });
     }
     init();
   </script>
