@@ -149,6 +149,7 @@
       position: relative;
       overflow: visible;
       isolation: isolate;
+      cursor: pointer;
     }
     .video-box::after {
       content: 'VÍDEO EXPLICATIVO EXCLUSIVO';
@@ -725,21 +726,20 @@
     function ensurePlayableOnInteraction() {
       videoBox.addEventListener('click', () => {
         if (video.paused) {
-          const p = video.play();
-          if (p && typeof p.then === 'function') {
-            p.catch(() => {
-              video.muted = true;
-              video.play().catch(() => {
-                videoError.style.display = 'flex';
-              });
+          video.play().catch(() => {
+            video.muted = true;
+            video.play().catch(() => {
+              videoError.style.display = 'flex';
             });
-          }
+          });
         }
       });
       video.addEventListener('error', () => {
         videoError.style.display = 'flex';
       });
-      document.addEventListener('visibilitychange', () => {});
+      video.addEventListener('loadeddata', () => {
+        video.muted = false;
+      });
     }
     function init() {
       startTimers();
