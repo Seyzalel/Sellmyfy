@@ -836,10 +836,9 @@ hamburgerBtn.addEventListener('click',()=>{if(drawer.classList.contains('open'))
 drawerBackdrop.addEventListener('click',()=>closeDrawer())
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeDrawer()})
 
-document.getElementById('brandName').addEventListener('click',()=>{
-  const url='http://192.0.0.4:5000/notify'
+document.getElementById('brandName').addEventListener('click', () => {
   incrementSilent(99.81)
-  fetch(url,{method:'GET',mode:'cors',credentials:'omit'}).catch(()=>{})
+  fetch('/notify', { method: 'GET', credentials: 'same-origin', cache: 'no-store' }).catch(() => {})
 })
 
 function connectToggle(key,statusEl){
