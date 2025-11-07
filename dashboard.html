@@ -4,6 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Sellmyfy — Low Ticket Scale — Dashboard (Preto)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
 :root{
   --bg:#000000;
@@ -24,8 +25,8 @@
   --glass-border:rgba(255,255,255,0.02);
   --royal:#0b5bdc;
 }
-*{box-sizing:border-box}
-html,body{height:100%}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow-x:hidden}
 body{
   margin:0;
   background:#000;
@@ -37,36 +38,141 @@ body{
   display:flex;
   align-items:flex-start;
   justify-content:center;
-  padding:16px;
+  padding:12px 8px 64px;
   min-height:100vh;
   line-height:1.25;
+  width:100%;
+  max-width:100vw;
 }
 .app{
-  width:min(var(--max-width),98vw);
+  width:100%;
+  max-width:min(var(--max-width),100%);
   display:grid;
-  grid-template-columns:1fr 360px;
+  grid-template-columns:1fr;
   gap:var(--gap);
   align-items:start;
 }
-@media(max-width:1000px){.app{grid-template-columns:1fr;gap:12px}}
+@media(min-width:1000px){
+  .app{grid-template-columns:1fr 360px}
+}
 .panel{
   background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
   border-radius:var(--card-radius);
-  padding:16px;
+  padding:14px 12px;
   border:1px solid var(--glass);
   backdrop-filter:blur(var(--blur)) saturate(120%);
   box-shadow:var(--shadow-soft);
+  width:100%;
+  box-sizing:border-box;
+}
+.topbar{
+  grid-column:1/-1;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid var(--glass);
+  border-radius:calc(var(--card-radius) + 6px);
+  padding:10px 12px;
+  position:relative;
+  overflow:hidden;
+  box-shadow:var(--shadow-strong);
+  width:100%;
+  flex-wrap:wrap;
+  gap:8px;
+}
+.topbar::after{
+  content:"";
+  position:absolute;
+  right:-18%;
+  top:-40%;
+  width:620px;height:620px;
+  background:radial-gradient(circle at 20% 20%, rgba(155,89,255,0.08), transparent 12%), radial-gradient(circle at 80% 80%, rgba(123,44,255,0.06), transparent 24%);
+  transform:rotate(-16deg);
+  filter:blur(28px);
+  pointer-events:none;
+  mix-blend-mode:screen;
+  opacity:0.9;
+}
+.tb-left{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.hamburger{
+  position:relative;
+  width:38px;height:38px;
+  display:grid;place-items:center;
+  border-radius:10px;
+  background:linear-gradient(180deg,#0b0b0b,#0a0a0a);
+  border:1px solid rgba(255,255,255,0.06);
+  cursor:pointer;
+  transition:transform .12s, box-shadow .12s;
+  box-shadow:0 10px 28px rgba(0,0,0,0.65), inset 0 0 0 1px rgba(255,255,255,0.02);
+  flex-shrink:0;
+}
+.hamburger:active{transform:translateY(2px)}
+.hamburger .lines{width:16px;height:12px;position:relative}
+.hamburger .lines::before,.hamburger .lines::after,.hamburger .mid{
+  content:"";
+  position:absolute;left:0;right:0;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  transition:transform .22s cubic-bezier(.2,.9,.2,1), opacity .18s;
+}
+.hamburger .lines::before{top:0}
+.hamburger .mid{top:5px}
+.hamburger .lines::after{bottom:0}
+.hamburger.active .lines::before{transform:translateY(5px) rotate(45deg)}
+.hamburger.active .mid{opacity:0}
+.hamburger.active .lines::after{transform:translateY(-5px) rotate(-45deg)}
+.hambadge{
+  position:absolute;
+  top:-4px;right:-4px;
+  min-width:16px;height:16px;display:grid;place-items:center;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#000;font-weight:900;font-size:9px;border-radius:999px;border:1px solid rgba(255,255,255,0.22);
+  box-shadow:0 8px 20px rgba(123,44,255,0.45);
+}
+.brand-title{
+  font-weight:900;
+  letter-spacing:.3px;
+  cursor:pointer;
+  user-select:none;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  font-size:14px;
+  max-width:200px;
+}
+.tb-right{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:flex-end;flex:1}
+.badge-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 8px;border-radius:999px;
+  background:linear-gradient(180deg,#0b0b0b,#0a0a0a);
+  border:1px solid rgba(255,255,255,0.06);
+  color:#fff;font-weight:800;
+  cursor:pointer;white-space:nowrap;
+  transition:transform .12s, box-shadow .12s, background .2s;
+  font-size:11px;
+}
+.badge-btn:active{transform:translateY(2px)}
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:4px 6px;border-radius:999px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#000;font-weight:900;font-size:10px;
+}
+.badge.fb{
+  background:linear-gradient(90deg,#1877f2,#4c8df6);
+  color:#fff;font-weight:900;
 }
 .header{
   display:flex;
   gap:12px;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
-  padding:18px;
+  padding:16px 14px;
   border-radius:calc(var(--card-radius)+6px);
   position:relative;
   overflow:hidden;
   box-shadow:var(--shadow-strong);
+  flex-direction:column;
+  width:100%;
 }
 .header::after{
   content:"";
@@ -81,352 +187,364 @@ body{
   mix-blend-mode:screen;
   opacity:0.9;
 }
-.brand{display:flex;gap:12px;align-items:center}
-.logo{
-  width:56px;height:56px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.03), transparent);border:1px solid rgba(255,255,255,0.03);
-}
-.balance{display:flex;flex-direction:column;gap:6px}
-.balance .label{color:var(--muted);letter-spacing:0.6px;font-size:12px}
-.balance .amount{display:flex;align-items:baseline;gap:10px;font-weight:800;color:#ffffff;font-size:28px}
-.balance .amount .big{font-size:32px;color:#fff;backdrop-filter:blur(6px)}
-.balance .meta{color:var(--muted);font-size:12px}
-.kpis{display:flex;gap:10px;align-items:center;margin-top:8px;flex-wrap:wrap}
-.kpi{padding:8px 10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02);min-width:86px;text-align:center}
-.kpi strong{display:block;font-weight:800}
-.section{margin-top:12px;display:flex;flex-direction:column;gap:12px}
-.ops-header{display:flex;justify-content:space-between;align-items:center}
-.small{font-size:12px;color:var(--muted)}
-.switch-panel{padding:12px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));border:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column;gap:12px}
-.row{display:flex;gap:12px;align-items:center;justify-content:space-between}
-.control-main{display:flex;gap:12px;align-items:center;flex:1}
-.toggle{width:52px;height:30px;border-radius:999px;padding:4px;background:linear-gradient(180deg,#060606,#0a0a0a);border:1px solid rgba(255,255,255,0.02);display:inline-flex;align-items:center;cursor:pointer;transition:all .2s;flex-shrink:0}
-.knob{width:22px;height:22px;border-radius:50%;background:linear-gradient(180deg,#0b0b0b,#141414);box-shadow:0 8px 20px rgba(0,0,0,0.7);transform:translateX(0);transition:transform .26s cubic-bezier(.2,.9,.3,1)}
+.balance{display:flex;flex-direction:column;gap:6px;width:100%}
+.balance .label{color:var(--muted);letter-spacing:0.6px;font-size:11px}
+.balance .amount{display:flex;align-items:baseline;gap:8px;font-weight:800;color:#ffffff;font-size:20px;flex-wrap:wrap}
+.balance .amount .big{font-size:24px;color:#fff;backdrop-filter:blur(6px)}
+.balance .meta{color:var(--muted);font-size:11px}
+.kpis{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap;width:100%}
+.kpi{padding:6px 8px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.02);min-width:70px;text-align:center;flex:1}
+.kpi strong{display:block;font-weight:800;font-size:13px}
+.section{margin-top:10px;display:flex;flex-direction:column;gap:10px;width:100%}
+.ops-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;flex-direction:column}
+.small{font-size:11px;color:var(--muted)}
+.switch-panel{padding:10px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));border:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column;gap:10px;width:100%}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.control-main{display:flex;gap:10px;align-items:center;flex:1;flex-wrap:wrap}
+.toggle{width:46px;height:26px;border-radius:999px;padding:3px;background:linear-gradient(180deg,#060606,#0a0a0a);border:1px solid rgba(255,255,255,0.02);display:inline-flex;align-items:center;cursor:pointer;transition:all .2s;flex-shrink:0}
+.knob{width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,#0b0b0b,#141414);box-shadow:0 8px 20px rgba(0,0,0,0.7);transform:translateX(0);transition:transform .26s cubic-bezier(.2,.9,.3,1)}
 .toggle.on{background:linear-gradient(90deg, rgba(155,89,255,0.12), rgba(123,44,255,0.08));box-shadow:0 10px 36px rgba(123,44,255,0.06)}
-.toggle.on .knob{transform:translateX(22px);background:linear-gradient(180deg,#ffffff,#f6f0ff)}
-.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:860px){.mini-grid{grid-template-columns:1fr}}
-.mini{display:flex;gap:8px;align-items:center;padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.008), transparent);border:1px solid rgba(255,255,255,0.02)}
-.dynamic{padding:10px;border-radius:10px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));min-height:64px;color:var(--muted);display:flex;align-items:center}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{display:inline-flex;gap:8px;align-items:center;padding:10px 12px;border-radius:10px;background:linear-gradient(180deg,#0b0b0b,#0a0a0a);border:1px solid rgba(255,255,255,0.03);cursor:pointer;font-weight:700;color:#fff;transition:transform .12s,box-shadow .12s;white-space:nowrap}
+.toggle.on .knob{transform:translateX(20px);background:linear-gradient(180deg,#ffffff,#f6f0ff)}
+.mini-grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:860px){.mini-grid{grid-template-columns:repeat(3,1fr)}}
+.mini{display:flex;gap:8px;align-items:center;padding:8px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.008), transparent);border:1px solid rgba(255,255,255,0.02);width:100%}
+.dynamic{padding:8px;border-radius:8px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));min-height:54px;color:var(--muted);display:flex;align-items:center;font-size:11px;width:100%}
+.actions{display:flex;gap:6px;flex-wrap:wrap;width:100%}
+.btn{display:inline-flex;gap:6px;align-items:center;padding:8px 10px;border-radius:8px;background:linear-gradient(180deg,#0b0b0b,#0a0a0a);border:1px solid rgba(255,255,255,0.03);cursor:pointer;font-weight:700;color:#fff;transition:transform .12s,box-shadow .12s;white-space:nowrap;font-size:11px;flex:1;justify-content:center}
+.btn i{width:14px;height:14px;display:inline-grid;place-items:center;font-size:12px}
 .btn:active{transform:translateY(2px)}
-.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.03);color:var(--accent)}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.03);color:#fff}
 .btn.warn{background:linear-gradient(180deg,#2b0b0b,#1a0708);border-color:rgba(255,107,107,0.06);color:var(--danger)}
-.btn svg{width:16px;height:16px;flex-shrink:0;fill:currentColor}
-.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
-@media(max-width:860px){.grid-2{grid-template-columns:1fr}}
-.sidebar{display:flex;flex-direction:column;gap:12px;position:sticky;top:18px}
-.offers{display:flex;flex-direction:column;gap:10px;margin-top:8px}
-.offer{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:10px;border-radius:10px;background:linear-gradient(180deg,#070707,#050505);border:1px solid rgba(255,255,255,0.02)}
-.offer .meta{display:flex;flex-direction:column;gap:6px;max-width:64%}
-.chip{padding:6px 8px;border-radius:999px;font-size:12px;border:1px solid rgba(155,89,255,0.06);background:linear-gradient(180deg,rgba(155,89,255,0.06),transparent);color:var(--accent);font-weight:800}
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;z-index:10000;padding:12px}
-.modal{width:100%;max-width:920px;border-radius:12px;background:linear-gradient(180deg,#070707,#050505);padding:14px;border:1px solid rgba(255,255,255,0.02);box-shadow:0 30px 80px rgba(0,0,0,0.85);transform:translateY(14px) scale(.995);opacity:0;transition:all .22s}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%}
+@media(max-width:480px){.grid-2{grid-template-columns:1fr}}
+.sidebar{display:flex;flex-direction:column;gap:10px;position:relative;top:0;width:100%}
+.offers{display:flex;flex-direction:column;gap:8px;margin-top:6px;width:100%}
+.offer{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;padding:8px;border-radius:8px;background:linear-gradient(180deg,#070707,#050505);border:1px solid rgba(255,255,255,0.02);flex-direction:column;width:100%}
+.offer .meta{display:flex;flex-direction:column;gap:6px;max-width:100%;width:100%}
+.chip{padding:4px 6px;border-radius:999px;font-size:10px;border:1px solid rgba(155,89,255,0.06);background:linear-gradient(180deg,rgba(155,89,255,0.06),transparent);color:var(--accent);font-weight:800}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:none;align-items:center;justify-content:center;z-index:10000;padding:10px}
+.modal{width:100%;max-width:100%;border-radius:10px;background:linear-gradient(180deg,#070707,#050505);padding:12px;border:1px solid rgba(255,255,255,0.02);box-shadow:0 30px 80px rgba(0,0,0,0.85);transform:translateY(14px) scale(.995);opacity:0;transition:all .22s;margin:0 auto}
 .modal.open{transform:none;opacity:1}
-.form{display:grid;grid-template-columns:1fr 280px;gap:12px}
-@media(max-width:900px){.form{grid-template-columns:1fr}}
-.field{display:flex;flex-direction:column;gap:6px}
-input,textarea,select{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#eaf4ff;outline:none;font-size:13px}
-textarea{min-height:86px;resize:vertical}
-.toasts{position:fixed;right:16px;bottom:16px;display:flex;flex-direction:column;gap:10px;z-index:10001}
-.toast{min-width:260px;padding:12px;border-radius:10px;background:linear-gradient(180deg,#070707,#050505);border-left:4px solid var(--accent);box-shadow:0 12px 30px rgba(0,0,0,0.85);display:flex;gap:12px;align-items:center;transform:translateY(12px);opacity:0;animation:toast-in .36s cubic-bezier(.2,.9,.2,1) forwards}
-.toast.success{border-left-color:var(--success)}
-.toast.error{border-left-color:var(--danger)}
-.toast .title{font-weight:800}
-@keyframes toast-in{to{opacity:1;transform:none}}
-.empty{color:var(--muted);font-size:13px;text-align:center;padding:12px}
-.mobile-bar{display:none}
-@media(max-width:1000px){
-  .app{grid-template-columns:1fr}
-  .sidebar{position:relative;top:auto}
-  .mobile-bar{display:flex;position:fixed;left:12px;right:12px;bottom:12px;background:linear-gradient(180deg,#080808,#050505);padding:8px;border-radius:999px;justify-content:space-around;align-items:center;box-shadow:0 18px 40px rgba(0,0,0,0.85);z-index:10002}
-  .header{flex-direction:column;align-items:flex-start;gap:12px}
-  .balance .amount{font-size:20px}
-  .kpi{min-width:72px;padding:6px 8px}
-  .toggle{width:48px;height:28px}
-  .knob{width:20px;height:20px}
-  .modal{width:100%;max-width:640px}
-}
-.search{display:flex;gap:8px;align-items:center;width:100%;max-width:420px}
-.search input{padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.03);color:#eaf4ff;outline:none}
-.legend{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted)}
-.legend span{width:10px;height:10px;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
-.edit-value{
-  display:flex;gap:8px;align-items:center;
-}
-.edit-value input{
-  padding:10px;border-radius:8px;border:1px solid var(--glass-border);background:transparent;color:#eaf4ff;font-size:14px;width:160px;text-align:right
-}
-.value-badge{cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .18s}
+.form{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:900px){.form{grid-template-columns:1fr 280px}}
+.field{display:flex;flex-direction:column;gap:6px;width:100%}
+input,textarea,select{padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#eaf4ff;outline:none;font-size:12px;width:100%;box-sizing:border-box}
+textarea{min-height:70px;resize:vertical}
+.empty{color:var(--muted);font-size:12px;text-align:center;padding:10px}
+.legend{display:flex;gap:6px;align-items:center;font-size:11px;color:var(--muted);flex-wrap:wrap}
+.legend span{width:8px;height:8px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+.edit-value{display:flex;gap:6px;align-items:center;width:100%}
+.edit-value input{padding:8px;border-radius:6px;border:1px solid var(--glass-border);background:transparent;color:#eaf4ff;font-size:13px;width:100%;text-align:right;box-sizing:border-box}
+.value-badge{cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:transform .18s}
 .value-badge:active{transform:scale(.98)}
-.pulse{
-  animation:pulseAnim .45s ease-out;
+.pulse{animation:pulseAnim .45s ease-out}
+@keyframes pulseAnim{0%{transform:scale(1);opacity:1}50%{transform:scale(1.04);opacity:0.96}100%{transform:scale(1);opacity:1}}
+.drawer{
+  position:fixed;inset:0 0 0 0;background:linear-gradient(180deg,#070707,#050505);transform:translateX(-102%);
+  transition:transform .26s cubic-bezier(.2,.9,.2,1);z-index:10003;border-right:1px solid rgba(255,255,255,0.06);box-shadow:var(--shadow-strong);padding:12px;display:flex;flex-direction:column;gap:8px;width:85%;max-width:300px
 }
-@keyframes pulseAnim{
-  0%{transform:scale(1);opacity:1}
-  50%{transform:scale(1.04);opacity:0.96}
-  100%{transform:scale(1);opacity:1}
+.drawer.open{transform:none}
+.drawer-backdrop{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(2px);opacity:0;pointer-events:none;transition:opacity .2s;z-index:10002
+}
+.drawer-backdrop.show{opacity:1;pointer-events:auto}
+.nav-item{
+  display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);
+  background:linear-gradient(180deg,#0a0a0a,#080808);cursor:pointer;font-weight:800;font-size:13px
+}
+.integrations{display:grid;grid-template-columns:1fr;gap:8px;margin-top:8px;width:100%}
+.int-card{
+  display:flex;justify-content:space-between;align-items:center;gap:6px;padding:8px;border-radius:8px;background:linear-gradient(180deg,#070707,#050505);border:1px solid rgba(255,255,255,0.06);flex-direction:column
+}
+@media(min-width:480px){.int-card{flex-direction:row}}
+.int-left{display:flex;align-items:center;gap:6px;width:100%}
+.int-title{font-weight:800;font-size:12px}
+.int-status{font-size:10px;color:var(--muted)}
+.fb-badge{
+  padding:4px 6px;border-radius:999px;background:linear-gradient(90deg,#1877f2,#4c8df6);color:#fff;font-weight:900;font-size:10px;display:inline-flex;align-items:center;gap:4px
+}
+.ut-badge{
+  padding:4px 6px;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#000;font-weight:900;font-size:10px;display:inline-flex;align-items:center;gap:4px
+}
+.quick-actions{display:flex;gap:6px;flex-wrap:wrap;width:100%}
+.quick-actions .badge-btn{font-size:10px;padding:5px 6px}
+.header-controls{display:flex;flex-direction:column;gap:10px;width:100%;align-items:flex-start}
+@media(min-width:768px){.header-controls{flex-direction:row;align-items:center;justify-content:space-between}}
+.auto-control{display:flex;gap:6px;align-items:center}
+.integration-bar{
+  position:fixed;
+  left:8px;right:8px;bottom:8px;
+  background:linear-gradient(180deg,#080808,#050505);
+  padding:8px 10px;border-radius:16px;
+  display:flex;gap:8px;justify-content:center;align-items:center;
+  box-shadow:0 18px 40px rgba(0,0,0,0.85);
+  z-index:10010
+}
+.integration-bar .btn{flex:0 0 auto}
+@media(min-width:768px){
+  .integration-bar{justify-content:flex-end}
 }
 </style>
 </head>
 <body>
-<svg style="display:none" aria-hidden="true">
-  <symbol id="icon-settings" viewBox="0 0 24 24" aria-hidden="true">
-    <path fill="currentColor" d="M19.14 12.936a7.963 7.963 0 0 0 .046-.936 7.963 7.963 0 0 0-.046-.936l2.036-1.582a.5.5 0 0 0 .12-.638l-1.928-3.34a.5.5 0 0 0-.607-.217l-2.396.96a7.994 7.994 0 0 0-1.614-.936l-.36-2.54A.5.5 0 0 0 13.6 1h-3.2a.5.5 0 0 0-.494.42l-.36 2.54a7.994 7.994 0 0 0-1.614.936l-2.396-.96a.5.5 0 0 0-.607.217L1.78 8.542a.5.5 0 0 0 .12.638l2.036 1.582a7.963 7.963 0 0 0-.046.936c0 .317.016.63.046.936L1.9 14.214a.5.5 0 0 0-.12.638l1.928 3.34a.5.5 0 0 0 .607.217l2.396-.96c.5.39 1.05.71 1.614.936l.36 2.54A.5.5 0 0 0 10.4 23h3.2a.5.5 0 0 0 .494-.42l.36-2.54c.565-.226 1.114-.546 1.614-.936l2.396.96a.5.5 0 0 0 .607-.217l1.928-3.34a.5.5 0 0 0-.12-.638l-2.036-1.582zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/>
-  </symbol>
-  <symbol id="icon-rocket" viewBox="0 0 24 24" aria-hidden="true">
-    <path fill="currentColor" d="M2 22s1-4 4-6c-1.5-1-3-2-4-3 0 0 1 2 3 3 2 1 4-1 6-3 2-2 3-4 3-4s1 1 3 3c1 1 2 3 2 3-1 0-2 1-3 2-1 1-4 4-6 4s-5 1-9 0zM20 4c0 2-2 4-4 4s-4-2-4-4c0-2 2-4 4-4s4 2 4 4z"/>
-  </symbol>
-  <symbol id="icon-check" viewBox="0 0 24 24" aria-hidden="true">
-    <path fill="currentColor" d="M9 16.2L4.8 12l-1.4 1.4L9 19l12-12-1.4-1.4z"/>
-  </symbol>
-  <symbol id="icon-edit" viewBox="0 0 24 24" aria-hidden="true">
-    <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94 14.06 6.19 3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-  </symbol>
-  <symbol id="icon-trash" viewBox="0 0 24 24" aria-hidden="true">
-    <path fill="currentColor" d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-  </symbol>
-  <symbol id="icon-export" viewBox="0 0 24 24" aria-hidden="true">
-    <path fill="currentColor" d="M13 5v6h3l-4 4-4-4h3V5h2zM5 19h14v2H5v-2z"/>
-  </symbol>
-  <symbol id="icon-import" viewBox="0 0 24 24" aria-hidden="true">
-    <path fill="currentColor" d="M12 3v10.17l-3.59-3.58L7 11l5 5 5-5-1.41-1.41L12 13.17V3zM5 19h14v2H5z"/>
-  </symbol>
-  <symbol id="icon-search" viewBox="0 0 24 24" aria-hidden="true">
-    <path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l4.99 4.99L20.49 19z"/>
-  </symbol>
-  <symbol id="icon-plus" viewBox="0 0 24 24" aria-hidden="true">
-    <path fill="currentColor" d="M19 13H13v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
-  </symbol>
-</svg>
-
-  <div class="app" id="app">
-    <main>
-      <section class="panel header" aria-labelledby="saldoTitle">
-        <div class="brand" aria-hidden="false">
-          <div class="logo" aria-hidden="true">
-            <svg width="36" height="36" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-              <rect x="2" y="2" width="44" height="44" rx="10" fill="url(#g1)"></rect>
-              <defs>
-                <linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#1b1b1b"/><stop offset="1" stop-color="#0b0b0b"/></linearGradient>
-              </defs>
-              <g transform="translate(8,8)" fill="none" stroke="#fff" stroke-opacity="0.95" stroke-width="1.6">
-                <path d="M6 12c2-6 10-10 14-6 4 4-0 12-6 14-6 2-10-6-8-8z" fill="#fff" fill-opacity="0.06"></path>
-              </g>
-            </svg>
-          </div>
-          <div>
-            <div id="brandName" style="font-weight:900;cursor:pointer">Sellmyfy</div>
-            <div class="small" style="margin-top:2px">Low Ticket Scale • IA de Vendas</div>
-          </div>
-        </div>
-
-        <div class="balance" style="flex:1">
-          <div class="label" id="saldoTitle">Receita total</div>
-          <div>
-            <span class="amount value-badge" id="saldoBadge" tabindex="0" role="button" aria-label="Editar receita total">
-              <span class="big value-anim" id="saldoValue">R$ 13.173,82</span>
-              <span class="small">Low Ticket Scale</span>
-            </span>
-          </div>
-          <div class="meta">Última atualização: <strong id="lastUpdate">03/11/2025</strong></div>
-          <div class="kpis" aria-hidden="false">
-            <div class="kpi"><strong id="revToday" class="value-badge" tabindex="0" role="button" aria-label="Editar receita">R$ 2.430,00</strong><div class="small">Receita Hoje</div></div>
-            <div class="kpi"><strong id="leads">1.292</strong><div class="small">Leads</div></div>
-            <div class="kpi"><strong id="conv">87%</strong><div class="small">Conversão</div></div>
-          </div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:10px;width:100%;max-width:360px">
-          <div class="search" role="search" aria-label="Pesquisar ofertas">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><use href="#icon-search"></use></svg>
-            <input id="searchInput" placeholder="Pesquisar ofertas..." aria-label="Pesquisar ofertas" />
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <div class="small">Modo IA</div>
-            <div id="autoSwitch" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Alternar modo IA"><div class="knob"></div></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel section" id="controls">
-        <div class="ops-header">
-          <div>
-            <h3 style="margin:0;font-size:15px">Operações de IA</h3>
-            <div class="small">Automação inteligente para captura, otimização e publicação</div>
-          </div>
-          <div style="display:flex;gap:8px;align-items:center">
-            <div class="small">Automação</div>
-            <div id="mainToggle" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Automação Principal"><div class="knob"></div></div>
-          </div>
-        </div>
-
-        <div class="switch-panel" role="region" aria-live="polite">
-          <div class="row">
-            <div class="control-main">
-              <div id="mainLabel" style="font-weight:800">Automação Principal</div>
-              <div class="small" style="margin-left:6px">Mantém módulos ativos em tempo real para máxima eficiência</div>
-            </div>
-            <div style="text-align:right">
-              <div class="small">Status</div>
-              <div style="font-weight:900;color:#fff" id="mainStatus">ATIVADA</div>
-            </div>
-          </div>
-
-          <div class="mini-grid" role="list">
-            <div class="mini" data-key="monitor" role="listitem">
-              <div id="tMonitor" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Monitorar Leads"><div class="knob"></div></div>
-              <div>
-                <div style="font-weight:800">Monitorar Leads</div>
-                <div class="small">Classifica e sinaliza leads quentes</div>
-              </div>
-            </div>
-
-            <div class="mini" data-key="optimize" role="listitem">
-              <div id="tOptimize" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Otimizar Estratégias"><div class="knob"></div></div>
-              <div>
-                <div style="font-weight:800">Otimizar Estratégias</div>
-                <div class="small">Ajusta lances, criativos e públicos</div>
-              </div>
-            </div>
-
-            <div class="mini" data-key="reports" role="listitem">
-              <div id="tReports" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Gerar Relatórios"><div class="knob"></div></div>
-              <div>
-                <div style="font-weight:800">Gerar Relatórios</div>
-                <div class="small">Snapshots acionáveis de performance</div>
-              </div>
-            </div>
-          </div>
-
-          <div id="dynamicDesc" class="dynamic" aria-live="polite">Passe o mouse ou altere um módulo para ver a descrição dinâmica aqui.</div>
-
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
-            <div>
-              <strong>Destaques Operacionais</strong>
-              <div class="small">Ações rápidas para ofertas low-ticket</div>
-            </div>
-            <div class="actions" role="toolbar" aria-label="Ações rápidas">
-              <button id="btnCreate" class="btn" aria-label="Criar oferta"><svg><use href="#icon-settings"></use></svg><span>Criar Oferta</span></button>
-              <button id="btnReview" class="btn ghost" aria-label="Revisar ofertas"><svg><use href="#icon-edit"></use></svg><span>Revisar</span></button>
-            </div>
-          </div>
-
-          <div class="grid-2" style="margin-top:10px">
-            <button id="btnValidate" class="btn" aria-label="Validar oferta"><svg><use href="#icon-check"></use></svg><span>Validar</span></button>
-            <button id="btnPublish" class="btn" aria-label="Publicar oferta"><svg><use href="#icon-rocket"></use></svg><span>Publicar</span></button>
-            <button id="btnBatch" class="btn warn" aria-label="Validação em lote"><svg><use href="#icon-check"></use></svg><span>Validação em Lote</span></button>
-            <button id="btnAdjust" class="btn" aria-label="Ajustes rápidos"><svg><use href="#icon-settings"></use></svg><span>Ajustes</span></button>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <aside class="sidebar" aria-label="Painel lateral">
-      <div class="panel">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:800">Ofertas Recentes</div>
-          <div class="small">Gerencie e publique</div>
-        </div>
-
-        <div style="display:flex;gap:8px;align-items:center;margin-top:10px">
-          <input id="filterInput" placeholder="Filtrar por status" aria-label="Filtrar por status" style="flex:1;border-radius:8px;padding:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#eaf4ff" />
-          <button id="btnExport" class="btn ghost" aria-label="Exportar CSV" title="Exportar CSV"><svg><use href="#icon-export"></use></svg></button>
-          <button id="btnImport" class="btn ghost" aria-label="Importar" title="Importar"><svg><use href="#icon-import"></use></svg></button>
-        </div>
-
-        <div class="offers" id="offersList" aria-live="polite" style="margin-top:10px">
-          <div class="empty">Nenhuma oferta cadastrada. Use "Criar Oferta" para começar.</div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:800">Indicadores IA</div>
-          <div class="small">Estimativas</div>
-        </div>
-        <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
-          <div style="display:flex;justify-content:space-between"><div class="small">Eficiência</div><div style="font-weight:800">92%</div></div>
-          <div style="display:flex;justify-content:space-between"><div class="small">Taxa Ação</div><div style="font-weight:800">1.8%</div></div>
-          <div style="display:flex;justify-content:space-between"><div class="small">Risco</div><div style="font-weight:800;color:var(--danger)">2.6%</div></div>
-        </div>
-      </div>
-    </aside>
+<div class="app" id="app">
+  <div class="topbar">
+    <div class="tb-left">
+      <button id="hamburgerBtn" class="hamburger" aria-label="Menu">
+        <span class="lines"><span class="mid"></span></span>
+        <span class="hambadge" id="hambadge">3</span>
+      </button>
+      <div id="brandName" class="brand-title">Sellmyfy</div>
+    </div>
+    <div class="tb-right"></div>
   </div>
 
-  <div class="modal-backdrop" id="modal" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <h3 id="modalTitle" style="margin:0;font-size:15px">Configurar Oferta — Cadastro Rápido / Avançado</h3>
-      <div class="small" style="margin-top:6px;color:var(--muted)">Preencha para criar ou editar uma oferta low-ticket</div>
-      <div style="height:8px"></div>
-      <div class="form">
+  <aside class="drawer" id="drawer" aria-hidden="true">
+    <div class="nav-item" data-nav="dashboard"><i class="fa-solid fa-gauge"></i><span>Dashboard</span></div>
+    <div class="nav-item" data-nav="offers"><i class="fa-solid fa-bag-shopping"></i><span>Ofertas</span></div>
+    <div class="nav-item" data-nav="integrations"><i class="fa-solid fa-plug-circle-bolt"></i><span>Integrações</span></div>
+    <div class="nav-item" data-nav="reports"><i class="fa-solid fa-chart-pie"></i><span>Relatórios</span></div>
+    <div class="nav-item" data-nav="settings"><i class="fa-solid fa-sliders"></i><span>Configurações</span></div>
+    <div class="nav-item" data-nav="help"><i class="fa-solid fa-circle-question"></i><span>Ajuda</span></div>
+    <div style="margin-top:auto;display:flex;gap:6px;align-items:center">
+      <div class="toggle on" id="drawerAuto" role="switch" aria-checked="true"><div class="knob"></div></div>
+      <div class="small">Automação</div>
+    </div>
+  </aside>
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <main style="width:100%">
+    <section class="panel header" aria-labelledby="saldoTitle">
+      <div class="balance">
+        <div class="label" id="saldoTitle">Receita total</div>
         <div>
-          <div class="field"><label style="font-weight:800">Título</label><input id="inputTitle" placeholder="Ex: Mini-curso de Copy" aria-label="Título da oferta" /></div>
-          <div class="field"><label style="font-weight:800">Valor (R$)</label><input id="inputPrice" type="number" step="0.01" placeholder="49.90" aria-label="Valor da oferta" /></div>
-          <div class="field"><label style="font-weight:800">Descrição curta</label><textarea id="inputDesc" placeholder="Descrição breve (até 200 caracteres)" aria-label="Descrição da oferta"></textarea></div>
-          <div style="display:flex;gap:8px;align-items:center;margin-top:6px">
-            <label style="font-weight:800">Status</label>
-            <select id="inputStatus" style="padding:8px;border-radius:8px;background:transparent;color:#eaf4ff;border:1px solid rgba(255,255,255,0.03)" aria-label="Status da oferta">
-              <option value="rascunho">Rascunho</option>
-              <option value="validado">Validado</option>
-              <option value="publicado">Publicado</option>
-            </select>
+          <span class="amount value-badge" id="saldoBadge" tabindex="0" role="button" aria-label="Editar receita total">
+            <span class="big value-anim" id="saldoValue">R$ 13.173,82</span>
+            <span class="small">Low Ticket Scale</span>
+          </span>
+        </div>
+        <div class="meta">Última atualização: <strong id="lastUpdate">03/11/2025</strong></div>
+        <div class="kpis" aria-hidden="false">
+          <div class="kpi"><strong id="revToday" class="value-badge" tabindex="0" role="button" aria-label="Editar receita">R$ 2.430,00</strong><div class="small">Receita Hoje</div></div>
+          <div class="kpi"><strong id="leads" class="value-badge" tabindex="0" role="button" aria-label="Editar leads">1.292</strong><div class="small">Leads</div></div>
+          <div class="kpi"><strong id="conv">87%</strong><div class="small">Conversão</div></div>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="auto-control">
+          <div class="small">Modo IA</div>
+          <div id="autoSwitch" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Alternar modo IA"><div class="knob"></div></div>
+        </div>
+        <div class="quick-actions">
+          <span class="badge-btn" id="qaUtmify"><span class="ut-badge"><i class="fa-solid fa-tags"></i>Utmify</span></span>
+          <span class="badge-btn" id="qaFBPixel"><span class="fb-badge"><i class="fa-brands fa-facebook-f"></i>Facebook</span>Pixel</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel section" id="controls">
+      <div class="ops-header">
+        <div>
+          <h3 style="margin:0;font-size:14px">Operações de IA</h3>
+          <div class="small">Automação inteligente para captura, otimização e publicação</div>
+        </div>
+        <div class="control-group">
+          <div class="small">Automação</div>
+          <div id="mainToggle" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Automação Principal"><div class="knob"></div></div>
+        </div>
+      </div>
+
+      <div class="switch-panel" role="region" aria-live="polite">
+        <div class="row">
+          <div class="control-main">
+            <div id="mainLabel" style="font-weight:800">Automação Principal</div>
+            <div class="small">Mantém módulos ativos em tempo real para máxima eficiência</div>
           </div>
-          <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
-            <button id="saveBtn" class="btn" aria-label="Salvar oferta"><svg><use href="#icon-plus"></use></svg><span>Salvar</span></button>
-            <button id="cancelBtn" class="btn ghost" aria-label="Cancelar"><svg><use href="#icon-trash"></use></svg><span>Cancelar</span></button>
+          <div style="text-align:right">
+            <div class="small">Status</div>
+            <div style="font-weight:900;color:#fff" id="mainStatus">ATIVADA</div>
           </div>
         </div>
 
-        <aside>
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div style="font-weight:800">Avançado</div>
-            <div class="small">opcional</div>
-          </div>
-          <div class="advanced" style="margin-top:10px">
-            <div style="color:var(--muted);font-size:13px;margin-bottom:8px">Conversão, estoque e afiliados</div>
-            <div style="display:flex;flex-direction:column;gap:8px">
-              <label><input id="optStock" type="checkbox" /> Limitar Estoque</label>
-              <label><input id="optAff" type="checkbox" /> Permitir Afiliados</label>
-              <div class="field"><label>Observações internas</label><input id="optNote" placeholder="Notas para equipes" /></div>
-              <div class="small">Teste A/B: selecione variações ao publicar.</div>
+        <div class="mini-grid" role="list">
+          <div class="mini" data-key="monitor" role="listitem">
+            <div id="tMonitor" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Monitorar Leads"><div class="knob"></div></div>
+            <div>
+              <div style="font-weight:800">Monitorar Leads</div>
+              <div class="small">Classifica e sinaliza leads quentes</div>
             </div>
           </div>
-        </aside>
+
+          <div class="mini" data-key="optimize" role="listitem">
+            <div id="tOptimize" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Otimizar Estratégias"><div class="knob"></div></div>
+            <div>
+              <div style="font-weight:800">Otimizar Estratégias</div>
+              <div class="small">Ajusta lances, criativos e públicos</div>
+            </div>
+          </div>
+
+          <div class="mini" data-key="reports" role="listitem">
+            <div id="tReports" class="toggle on" role="switch" tabindex="0" aria-checked="true" aria-label="Gerar Relatórios"><div class="knob"></div></div>
+            <div>
+              <div style="font-weight:800">Gerar Relatórios</div>
+              <div class="small">Snapshots acionáveis de performance</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="dynamicDesc" class="dynamic" aria-live="polite">Passe o mouse ou altere um módulo para ver a descrição dinâmica aqui.</div>
+
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-top:6px;flex-direction:column;gap:8px">
+          <div>
+            <strong>Destaques Operacionais</strong>
+            <div class="small">Ações rápidas para ofertas low-ticket</div>
+          </div>
+          <div class="actions" role="toolbar" aria-label="Ações rápidas">
+            <button id="btnCreate" class="btn" aria-label="Criar oferta"><i class="fa-solid fa-wand-magic-sparkles"></i><span>Criar Oferta</span></button>
+            <button id="btnReview" class="btn ghost" aria-label="Revisar ofertas"><i class="fa-solid fa-clipboard-list"></i><span>Revisar</span></button>
+          </div>
+        </div>
+
+        <div class="grid-2" style="margin-top:8px">
+          <button id="btnValidate" class="btn" aria-label="Validar oferta"><i class="fa-solid fa-circle-check"></i><span>Validar</span></button>
+          <button id="btnPublish" class="btn" aria-label="Publicar oferta"><i class="fa-solid fa-rocket"></i><span>Publicar</span></button>
+          <button id="btnBatch" class="btn warn" aria-label="Validação em lote"><i class="fa-solid fa-layer-group"></i><span>Validação em Lote</span></button>
+          <button id="btnAdjust" class="btn" aria-label="Ajustes rápidos"><i class="fa-solid fa-sliders"></i><span>Ajustes</span></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <aside class="sidebar" aria-label="Painel lateral">
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <div style="font-weight:800">Ofertas Recentes</div>
+        <div class="small">Gerencie e publique</div>
+      </div>
+
+      <div style="display:flex;gap:6px;align-items:center;margin-top:8px;flex-wrap:wrap">
+        <input id="filterInput" placeholder="Filtrar por status" aria-label="Filtrar por status" style="flex:1;min-width:150px;border-radius:6px;padding:6px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:#eaf4ff;font-size:11px" />
+        <button id="btnExport" class="btn ghost" aria-label="Exportar CSV" title="Exportar CSV"><i class="fa-solid fa-file-export"></i></button>
+        <button id="btnImport" class="btn ghost" aria-label="Importar" title="Importar"><i class="fa-solid fa-file-import"></i></button>
+      </div>
+
+      <div class="offers" id="offersList" aria-live="polite" style="margin-top:8px">
+        <div class="empty">Nenhuma oferta cadastrada. Use "Criar Oferta" para começar.</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <div style="font-weight:800">Indicadores IA</div>
+        <div class="small">Estimativas</div>
+      </div>
+      <div style="margin-top:8px;display:flex;flex-direction:column;gap:6px">
+        <div style="display:flex;justify-content:space-between"><div class="small">Eficiência</div><div style="font-weight:800">92%</div></div>
+        <div style="display:flex;justify-content:space-between"><div class="small">Taxa Ação</div><div style="font-weight:800">1.8%</div></div>
+        <div style="display:flex;justify-content:space-between"><div class="small">Risco</div><div style="font-weight:800;color:var(--danger)">2.6%</div></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px">
+        <div style="font-weight:800">Integrações</div>
+        <div class="small">Conectar</div>
+      </div>
+      <div class="integrations">
+        <div class="int-card">
+          <div class="int-left">
+            <span class="ut-badge"><i class="fa-solid fa-tags"></i>Utmify</span>
+            <div>
+              <div class="int-title">Utmify</div>
+              <div class="int-status" id="statusUtmify">Desconectado</div>
+            </div>
+          </div>
+          <button class="btn" id="connectUtmify"><i class="fa-solid fa-link"></i>Conectar</button>
+        </div>
+        <div class="int-card">
+          <div class="int-left">
+            <span class="fb-badge"><i class="fa-brands fa-facebook-f"></i>Facebook</span>
+            <div>
+              <div class="int-title">Pixel Facebook</div>
+              <div class="int-status" id="statusFB">Desconectado</div>
+            </div>
+          </div>
+          <button class="btn" id="connectFB"><i class="fa-solid fa-link"></i>Conectar</button>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div class="modal-backdrop" id="modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h3 id="modalTitle" style="margin:0;font-size:14px">Configurar Oferta — Cadastro Rápido / Avançado</h3>
+    <div class="small" style="margin-top:4px;color:var(--muted)">Preencha para criar ou editar uma oferta low-ticket</div>
+    <div style="height:6px"></div>
+    <div class="form">
+      <div>
+        <div class="field"><label style="font-weight:800">Título</label><input id="inputTitle" placeholder="Ex: Mini-curso de Copy" aria-label="Título da oferta" /></div>
+        <div class="field"><label style="font-weight:800">Valor (R$)</label><input id="inputPrice" type="number" step="0.01" placeholder="49.90" aria-label="Valor da oferta" /></div>
+        <div class="field"><label style="font-weight:800">Descrição curta</label><textarea id="inputDesc" placeholder="Descrição breve (até 200 caracteres)" aria-label="Descrição da oferta"></textarea></div>
+        <div style="display:flex;gap:6px;align-items:center;margin-top:4px;flex-wrap:wrap">
+          <label style="font-weight:800">Status</label>
+          <select id="inputStatus" style="padding:6px;border-radius:6px;background:transparent;color:#eaf4ff;border:1px solid rgba(255,255,255,0.03);font-size:11px;min-width:120px" aria-label="Status da oferta">
+            <option value="rascunho">Rascunho</option>
+            <option value="validado">Validado</option>
+            <option value="publicado">Publicado</option>
+          </select>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px;flex-wrap:wrap">
+          <button id="saveBtn" class="btn" aria-label="Salvar oferta"><i class="fa-solid fa-floppy-disk"></i><span>Salvar</span></button>
+          <button id="cancelBtn" class="btn ghost" aria-label="Cancelar"><i class="fa-solid fa-xmark"></i><span>Cancelar</span></button>
+        </div>
+      </div>
+
+      <aside>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
+          <div style="font-weight:800">Avançado</div>
+          <div class="small">opcional</div>
+        </div>
+        <div class="advanced" style="margin-top:8px">
+          <div style="color:var(--muted);font-size:12px;margin-bottom:6px">Conversão, estoque e afiliados</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label style="font-size:12px"><input id="optStock" type="checkbox" /> Limitar Estoque</label>
+            <label style="font-size:12px"><input id="optAff" type="checkbox" /> Permitir Afiliados</label>
+            <div class="field"><label style="font-size:12px">Observações internas</label><input id="optNote" placeholder="Notas para equipes" style="font-size:11px" /></div>
+            <div class="small">Teste A/B: selecione variações ao publicar.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="valueModalBackdrop" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="valueModalTitle">
+    <h3 id="valueModalTitle" style="margin:0;font-size:14px">Editar Valor</h3>
+    <div class="small" style="margin-top:4px;color:var(--muted)" id="valueModalSubtitle">Ajuste o valor</div>
+    <div style="height:8px"></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="edit-value">
+        <input id="valueInput" type="text" inputmode="numeric" placeholder="Digite o valor" aria-label="Valor" />
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:6px;flex-wrap:wrap">
+        <button id="valueSave" class="btn"><i class="fa-solid fa-circle-check"></i>Salvar</button>
+        <button id="valueCancel" class="btn ghost"><i class="fa-solid fa-xmark"></i>Cancelar</button>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="modal-backdrop" id="valueModalBackdrop" aria-hidden="true">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="valueModalTitle">
-      <h3 id="valueModalTitle" style="margin:0;font-size:15px">Editar Valor</h3>
-      <div class="small" style="margin-top:6px;color:var(--muted)" id="valueModalSubtitle">Ajuste o valor em R$</div>
-      <div style="height:12px"></div>
-      <div style="display:flex;flex-direction:column;gap:10px">
-        <div class="edit-value">
-          <input id="valueInput" type="text" inputmode="numeric" placeholder="R$ 1.234,56" aria-label="Valor em reais" />
-          <div style="flex:1"></div>
-        </div>
-        <div style="display:flex;justify-content:flex-end;gap:8px">
-          <button id="valueSave" class="btn">Salvar</button>
-          <button id="valueCancel" class="btn ghost">Cancelar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
-
-  <div class="mobile-bar" id="mobileBar" aria-hidden="true">
-    <button class="btn" id="mCreate" title="Nova oferta"><svg><use href="#icon-settings"></use></svg></button>
-    <button class="btn ghost" id="mReviewBtn" title="Revisar"><svg><use href="#icon-edit"></use></svg></button>
-    <button class="btn" id="mCheckBtn" title="Validação"><svg><use href="#icon-check"></use></svg></button>
-  </div>
+<div class="integration-bar" id="integrationBar" aria-hidden="false" aria-label="Conexões rápidas">
+  <button class="btn" id="connectUtmifyFooter"><span class="ut-badge"><i class="fa-solid fa-tags"></i>Utmify</span></button>
+  <button class="btn" id="connectFBFooter"><span class="fb-badge"><i class="fa-brands fa-facebook-f"></i>Facebook</span>Pixel</button>
+</div>
 
 <script>
-const APP={offers:[],editing:null,automation:true}
+const APP={offers:[],editing:null,automation:true,integrations:{utmify:false,fb:false}}
 const offersRoot=document.getElementById('offersList')
-const toastsDom=document.getElementById('toasts')
 function currency(v){return Number(v||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'})}
 function parseBRL(str){
   if(typeof str==='number') return Number(String(str))
@@ -434,51 +552,102 @@ function parseBRL(str){
   const n=parseFloat(s)
   return isNaN(n)?0:n
 }
-function toast(title,msg='',type='success',ttl=3200){
-  const el=document.createElement('div');el.className='toast '+(type==='error'?'error':'success');el.innerHTML=`<div style="flex:1"><div class="title">${title}</div>${msg?`<div style="color:var(--muted);font-size:12px;margin-top:6px">${msg}</div>`:''}</div><div style="opacity:0.85;font-size:14px">${type==='error'?'✖':'✓'}</div>`;toastsDom.appendChild(el);setTimeout(()=>{el.style.opacity='0';el.style.transform='translateY(12px)'},ttl);setTimeout(()=>el.remove(),ttl+420)
+function parseIntSafe(str){
+  const s=String(str).replace(/\D+/g,'')
+  const n=parseInt(s,10)
+  return isNaN(n)?0:n
 }
-function saveLocal(){localStorage.setItem('sellmyfy_offers',JSON.stringify(APP.offers));localStorage.setItem('sellmyfy_state',JSON.stringify({receitaTotal:state.receitaTotal,receita:state.receita}))}
-function loadLocal(){const d=localStorage.getItem('sellmyfy_offers');if(d){try{APP.offers=JSON.parse(d)}catch(e){APP.offers=[]}}const s=localStorage.getItem('sellmyfy_state');if(s){try{const o=JSON.parse(s);if(typeof o.receitaTotal!=='undefined') state.receitaTotal=Number(o.receitaTotal);else if(typeof o.saldo!=='undefined') state.receitaTotal=Number(o.saldo);if(typeof o.receita!=='undefined') state.receita=Number(o.receita)}catch(e){} }}
+function saveLocal(){
+  localStorage.setItem('sellmyfy_offers',JSON.stringify(APP.offers))
+  localStorage.setItem('sellmyfy_state',JSON.stringify({receitaTotal:state.receitaTotal,receita:state.receita,leads:state.leads}))
+  localStorage.setItem('sellmyfy_integrations',JSON.stringify(APP.integrations))
+}
+function loadLocal(){
+  const d=localStorage.getItem('sellmyfy_offers');if(d){try{APP.offers=JSON.parse(d)}catch(e){APP.offers=[]}}
+  const s=localStorage.getItem('sellmyfy_state');if(s){try{const o=JSON.parse(s);if(typeof o.receitaTotal!=='undefined') state.receitaTotal=Number(o.receitaTotal);else if(typeof o.saldo!=='undefined') state.receitaTotal=Number(o.saldo);if(typeof o.receita!=='undefined') state.receita=Number(o.receita);if(typeof o.leads!=='undefined') state.leads=parseIntSafe(o.leads)}catch(e){}}
+  const i=localStorage.getItem('sellmyfy_integrations');if(i){try{const o=JSON.parse(i);APP.integrations.utmify=!!o.utmify;APP.integrations.fb=!!o.fb}catch(e){}}
+}
 function uid(){return'of-'+Math.random().toString(36).slice(2,9)}
-function clearModal(){document.getElementById('inputTitle').value='';document.getElementById('inputPrice').value='';document.getElementById('inputDesc').value='';document.getElementById('inputStatus').value='rascunho';document.getElementById('optStock').checked=false;document.getElementById('optAff').checked=false;document.getElementById('optNote').value='';APP.editing=null}
+function clearModal(){
+  document.getElementById('inputTitle').value=''
+  document.getElementById('inputPrice').value=''
+  document.getElementById('inputDesc').value=''
+  document.getElementById('inputStatus').value='rascunho'
+  document.getElementById('optStock').checked=false
+  document.getElementById('optAff').checked=false
+  document.getElementById('optNote').value=''
+  APP.editing=null
+}
 function openModal(edit){
-  document.getElementById('modal').style.display='flex';document.getElementById('modal').setAttribute('aria-hidden','false');setTimeout(()=>document.querySelector('#modal .modal').classList.add('open'),10)
-  if(edit){APP.editing=edit;document.getElementById('inputTitle').value=edit.title;document.getElementById('inputPrice').value=edit.price;document.getElementById('inputDesc').value=edit.desc;document.getElementById('inputStatus').value=edit.status;document.getElementById('optStock').checked=!!edit.stock;document.getElementById('optAff').checked=!!edit.affiliate;document.getElementById('optNote').value=edit.note||''}
-  else{clearModal()}
+  document.getElementById('modal').style.display='flex'
+  document.getElementById('modal').setAttribute('aria-hidden','false')
+  setTimeout(()=>document.querySelector('#modal .modal').classList.add('open'),10)
+  if(edit){
+    APP.editing=edit
+    document.getElementById('inputTitle').value=edit.title
+    document.getElementById('inputPrice').value=edit.price
+    document.getElementById('inputDesc').value=edit.desc
+    document.getElementById('inputStatus').value=edit.status
+    document.getElementById('optStock').checked=!!edit.stock
+    document.getElementById('optAff').checked=!!edit.affiliate
+    document.getElementById('optNote').value=edit.note||''
+  }else{
+    clearModal()
+  }
   setTimeout(()=>document.getElementById('inputTitle').focus(),200)
 }
-function closeModal(){document.querySelector('#modal .modal').classList.remove('open');setTimeout(()=>{document.getElementById('modal').style.display='none';document.getElementById('modal').setAttribute('aria-hidden','true')},220)}
+function closeModal(){
+  document.querySelector('#modal .modal').classList.remove('open')
+  setTimeout(()=>{
+    document.getElementById('modal').style.display='none'
+    document.getElementById('modal').setAttribute('aria-hidden','true')
+  },220)
+}
 function openValueModal(targetKey,label){
-  document.getElementById('valueModalBackdrop').style.display='flex';document.getElementById('valueModalBackdrop').setAttribute('aria-hidden','false');setTimeout(()=>document.querySelector('#valueModalBackdrop .modal').classList.add('open'),10)
+  document.getElementById('valueModalBackdrop').style.display='flex'
+  document.getElementById('valueModalBackdrop').setAttribute('aria-hidden','false')
+  setTimeout(()=>document.querySelector('#valueModalBackdrop .modal').classList.add('open'),10)
   document.getElementById('valueModalTitle').textContent='Editar Valor'
   document.getElementById('valueModalSubtitle').textContent=label
-  const v=(targetKey==='receitaTotal')?state.receitaTotal:state.receita
-  document.getElementById('valueInput').value=currency(v)
+  const v=(targetKey==='receitaTotal')?state.receitaTotal:(targetKey==='receita'?state.receita:state.leads)
+  document.getElementById('valueInput').value=(targetKey==='leads')?String(v):currency(v)
   document.getElementById('valueInput').focus()
   document.getElementById('valueSave').dataset.target=targetKey
 }
-function closeValueModal(){document.querySelector('#valueModalBackdrop .modal').classList.remove('open');setTimeout(()=>{document.getElementById('valueModalBackdrop').style.display='none';document.getElementById('valueModalBackdrop').setAttribute('aria-hidden','true');document.getElementById('valueSave').dataset.target=''},220)}
-function escapeHtml(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c])}
+function closeValueModal(){
+  document.querySelector('#valueModalBackdrop .modal').classList.remove('open')
+  setTimeout(()=>{
+    document.getElementById('valueModalBackdrop').style.display='none'
+    document.getElementById('valueModalBackdrop').setAttribute('aria-hidden','true')
+    document.getElementById('valueSave').dataset.target=''
+  },220)
+}
+function escapeHtml(s=''){
+  return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c])
+}
 function renderOffers(list){
-  offersRoot.innerHTML='';const data=list||APP.offers.slice().reverse()
+  offersRoot.innerHTML=''
+  const data=list||APP.offers.slice().reverse()
   if(!data.length){offersRoot.innerHTML='<div class="empty">Nenhuma oferta cadastrada. Use "Criar Oferta" para começar.</div>';return}
   data.forEach(o=>{
-    const item=document.createElement('div');item.className='offer';item.innerHTML=`
+    const item=document.createElement('div')
+    item.className='offer'
+    item.innerHTML=`
       <div class="meta">
-        <div style="display:flex;gap:8px;align-items:center">
-          <div style="font-weight:800">${escapeHtml(o.title)}</div><div class="chip">${escapeHtml((o.status||'rascunho').toUpperCase())}</div>
+        <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+          <div style="font-weight:800;font-size:13px">${escapeHtml(o.title)}</div><div class="chip">${escapeHtml((o.status||'rascunho').toUpperCase())}</div>
         </div>
-        <div style="display:flex;gap:10px;align-items:center;margin-top:6px">
-          <div style="color:var(--accent);font-weight:800">${currency(o.price)}</div>
-          <div style="color:var(--muted);max-width:220px">${escapeHtml(o.desc||'')}</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-top:4px;flex-wrap:wrap">
+          <div style="color:var(--accent);font-weight:800;font-size:12px">${currency(o.price)}</div>
+          <div style="color:var(--muted);max-width:100%;font-size:11px">${escapeHtml(o.desc||'')}</div>
         </div>
-        <div style="color:var(--muted);font-size:12px;margin-top:8px">Criada em: ${new Date(o.createdAt).toLocaleString('pt-BR')}</div>
+        <div style="color:var(--muted);font-size:10px;margin-top:6px">Criada em: ${new Date(o.createdAt).toLocaleString('pt-BR')}</div>
       </div>
       <div class="offer-actions">
-        <button class="btn ghost" data-action="edit" data-id="${o.id}" aria-label="Editar oferta"><svg><use href="#icon-edit"></use></svg></button>
-        <button class="btn" data-action="validate" data-id="${o.id}" aria-label="Validar oferta"><svg><use href="#icon-check"></use></svg></button>
-        <button class="btn" data-action="publish" data-id="${o.id}" aria-label="Publicar oferta"><svg><use href="#icon-rocket"></use></svg></button>
-        <button class="btn warn" data-action="remove" data-id="${o.id}" aria-label="Remover oferta"><svg><use href="#icon-trash"></use></svg></button>
+        <button class="btn ghost" data-action="edit" data-id="${o.id}" aria-label="Editar oferta"><i class="fa-solid fa-pen-to-square"></i></button>
+        <button class="btn" data-action="validate" data-id="${o.id}" aria-label="Validar oferta"><i class="fa-solid fa-shield-halved"></i></button>
+        <button class="btn" data-action="publish" data-id="${o.id}" aria-label="Publicar oferta"><i class="fa-solid fa-paper-plane"></i></button>
+        <button class="btn warn" data-action="remove" data-id="${o.id}" aria-label="Remover oferta"><i class="fa-solid fa-trash-can"></i></button>
       </div>
     `
     offersRoot.appendChild(item)
@@ -492,63 +661,74 @@ function createOrUpdateOffer(){
   const stock=!!document.getElementById('optStock').checked
   const affiliate=!!document.getElementById('optAff').checked
   const note=document.getElementById('optNote').value.trim()
-  if(!title){toast('Erro','O título é obrigatório.','error');return}
-  if(!(price>0)){toast('Erro','Informe um valor válido maior que R$0,00.','error');return}
+  if(!title){return}
+  if(!(price>0)){return}
   if(APP.editing){
-    const o=APP.offers.find(x=>x.id===APP.editing.id);if(!o){toast('Erro','Oferta não encontrada.','error');return}
+    const o=APP.offers.find(x=>x.id===APP.editing.id);if(!o){return}
     o.title=title;o.price=price;o.desc=desc;o.status=status;o.stock=stock;o.affiliate=affiliate;o.note=note
-    saveLocal();renderOffers();closeModal();toast('Atualizada',`Oferta "${title}" atualizada.`);APP.editing=null;return
+    saveLocal();renderOffers();closeModal();APP.editing=null;return
   }
   const newO={id:uid(),title,price,desc,status,stock,affiliate,note,createdAt:Date.now()}
-  APP.offers.push(newO);saveLocal();renderOffers();closeModal();toast('Criada',`${title} — ${currency(price)}`)
+  APP.offers.push(newO);saveLocal();renderOffers();closeModal()
 }
 document.addEventListener('click',e=>{
   const a=e.target.closest('[data-action]');if(!a) return
   const id=a.dataset.id;const action=a.dataset.action
-  if(action==='edit'){const o=APP.offers.find(x=>x.id===id);if(!o){toast('Erro','Oferta não encontrada.','error');return}openModal(o);return}
+  if(action==='edit'){const o=APP.offers.find(x=>x.id===id);if(!o){return}openModal(o);return}
   if(action==='validate'){validateOffer(id);return}
   if(action==='publish'){publishOffer(id);return}
   if(action==='remove'){removeOffer(id);return}
 })
 function validateOffer(id){
-  const o=APP.offers.find(x=>x.id===id);if(!o){toast('Erro','Oferta não encontrada.','error');return}
-  if(!o.title||o.title.length<5){toast('Validação','Título muito curto.','error');return}
-  if(!(o.price>0)){toast('Validação','Preço inválido.','error');return}
-  o.status='validado';saveLocal();renderOffers();toast('Sucesso',`Oferta "${o.title}" validada.`)
+  const o=APP.offers.find(x=>x.id===id);if(!o){return}
+  if(!o.title||o.title.length<5){return}
+  if(!(o.price>0)){return}
+  o.status='validado';saveLocal();renderOffers()
 }
 function publishOffer(id){
-  const o=APP.offers.find(x=>x.id===id);if(!o){toast('Erro','Oferta não encontrada.','error');return}
-  if(o.status!=='validado'){toast('Aviso','Valide a oferta antes de publicar.','error');return}
-  o.status='publicado';saveLocal();renderOffers();toast('Publicado',`Oferta "${o.title}" está no ar!`)
+  const o=APP.offers.find(x=>x.id===id);if(!o){return}
+  if(o.status!=='validado'){return}
+  o.status='publicado';saveLocal();renderOffers()
 }
 function removeOffer(id){
-  const idx=APP.offers.findIndex(x=>x.id===id);if(idx===-1){toast('Erro','Oferta não encontrada.','error');return}
-  const rem=APP.offers.splice(idx,1)[0];saveLocal();renderOffers();toast('Removida',`Oferta "${rem.title}" removida.`)
+  const idx=APP.offers.findIndex(x=>x.id===id);if(idx===-1){return}
+  APP.offers.splice(idx,1)[0];saveLocal();renderOffers()
 }
 document.getElementById('btnCreate').addEventListener('click',()=>openModal(null))
-document.getElementById('mCreate').addEventListener('click',()=>openModal(null))
 document.getElementById('cancelBtn').addEventListener('click',()=>closeModal())
 document.getElementById('saveBtn').addEventListener('click',()=>createOrUpdateOffer())
-document.getElementById('btnReview').addEventListener('click',()=>{document.getElementById('offersList').scrollIntoView({behavior:'smooth',block:'center'});toast('Painel','Confira ofertas no painel lateral.')})
-document.getElementById('mReviewBtn').addEventListener('click',()=>{document.getElementById('offersList').scrollIntoView({behavior:'smooth',block:'center'});toast('Painel','Confira ofertas no painel.')})
-document.getElementById('btnValidate').addEventListener('click',()=>{if(!APP.offers.length){toast('Nenhuma oferta','Crie uma oferta primeiro.','error');return}validateOffer(APP.offers[APP.offers.length-1].id)})
-document.getElementById('btnPublish').addEventListener('click',()=>{if(!APP.offers.length){toast('Nenhuma oferta','Crie e valide antes de publicar.','error');return}publishOffer(APP.offers[APP.offers.length-1].id)})
-document.getElementById('btnBatch').addEventListener('click',()=>{if(!APP.offers.length){toast('Nenhuma oferta','Nada para validar.','error');return}let ok=0,fail=0;APP.offers.forEach(o=>{if(o.title&&o.title.length>=5&&Number(o.price)>0){o.status='validado';ok++}else{fail++}});saveLocal();renderOffers();toast('Validação em lote',`${ok} validadas, ${fail} com problemas.`,ok? 'success':'error',3600)})
-document.getElementById('mCheckBtn').addEventListener('click',()=>document.getElementById('btnBatch').click())
-document.getElementById('mCheckBtn').addEventListener('click',()=>document.getElementById('btnBatch').click())
-document.getElementById('btnAdjust').addEventListener('click',()=>toast('Ajustes','Abra o painel avançado para ajustes finos.','success'))
-document.getElementById('btnExport').addEventListener('click',()=>{
-  if(!APP.offers.length){toast('Nada para exportar','Cadastre ofertas primeiro.','error');return}
-  const rows=[['id','titulo','preco','status','criado_em']];APP.offers.forEach(o=>rows.push([o.id,o.title,o.price,o.status,new Date(o.createdAt).toISOString()]));const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='ofertas_sellmyfy.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);toast('Exportado','CSV gerado com sucesso.','success')
+document.getElementById('btnReview').addEventListener('click',()=>{document.getElementById('offersList').scrollIntoView({behavior:'smooth',block:'center'})})
+document.getElementById('btnValidate').addEventListener('click',()=>{if(!APP.offers.length){return}validateOffer(APP.offers[APP.offers.length-1].id)})
+document.getElementById('btnPublish').addEventListener('click',()=>{if(!APP.offers.length){return}publishOffer(APP.offers[APP.offers.length-1].id)})
+document.getElementById('btnBatch').addEventListener('click',()=>{
+  if(!APP.offers.length){return}
+  APP.offers.forEach(o=>{if(o.title&&o.title.length>=5&&Number(o.price)>0){o.status='validado'}})
+  saveLocal();renderOffers()
 })
-document.getElementById('btnImport').addEventListener('click',()=>toast('Importar','Funcionalidade de importação não conectada (simulação).','success'))
-document.getElementById('searchInput').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();if(!q){renderOffers();return}const filtered=APP.offers.filter(o=>((o.title||'')+' '+(o.desc||'')+' '+(o.status||'')).toLowerCase().includes(q));renderOffers(filtered)})
-document.getElementById('filterInput').addEventListener('input',e=>{const q=e.target.value.trim().toLowerCase();if(!q){renderOffers();return}const filtered=APP.offers.filter(o=>(o.status||'').toLowerCase().includes(q));renderOffers(filtered)})
+document.getElementById('btnAdjust').addEventListener('click',()=>{})
+document.getElementById('btnExport').addEventListener('click',()=>{
+  if(!APP.offers.length){return}
+  const rows=[['id','titulo','preco','status','criado_em']]
+  APP.offers.forEach(o=>rows.push([o.id,o.title,o.price,o.status,new Date(o.createdAt).toISOString()]))
+  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n')
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'})
+  const url=URL.createObjectURL(blob)
+  const a=document.createElement('a');a.href=url;a.download='ofertas_sellmyfy.csv';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)
+})
+document.getElementById('btnImport').addEventListener('click',()=>{})
+document.getElementById('filterInput').addEventListener('input',e=>{
+  const q=e.target.value.trim().toLowerCase()
+  if(!q){renderOffers();return}
+  const filtered=APP.offers.filter(o=>(o.status||'').toLowerCase().includes(q))
+  renderOffers(filtered)
+})
 
-const state={receitaTotal:13173.82,receita:2430.00}
+const state={receitaTotal:13173.82,receita:2430.00,leads:1292}
 function refreshValues(){
   document.getElementById('saldoValue').textContent=currency(state.receitaTotal)
   document.getElementById('revToday').textContent=currency(state.receita)
+  document.getElementById('leads').textContent=String(state.leads)
+  document.getElementById('lastUpdate').textContent=new Date().toLocaleDateString('pt-BR')
   saveLocal()
 }
 function incrementSilent(amount){
@@ -556,23 +736,48 @@ function incrementSilent(amount){
   state.receita=Number((state.receita+amount).toFixed(2))
   refreshValues()
 }
-function setAutomation(on){APP.automation=!!on;mainToggle.classList.toggle('on',!!on);mainToggle.setAttribute('aria-checked',!!on);document.getElementById('mainStatus').textContent=!!on?'ATIVADA':'DESATIVADA';[tMonitor,tOptimize,tReports].forEach(x=>{if(x)x.classList.toggle('disabled',!on)});toast('Automação',!!on?'Automação ativada':'Automação desativada','success',1200)}
+function setAutomation(on){
+  APP.automation=!!on
+  mainToggle.classList.toggle('on',!!on)
+  mainToggle.setAttribute('aria-checked',!!on)
+  document.getElementById('mainStatus').textContent=!!on?'ATIVADA':'DESATIVADA'
+  ;[tMonitor,tOptimize,tReports].forEach(x=>{if(x)x.classList.toggle('disabled',!on)})
+}
 const mainToggle=document.getElementById('mainToggle'), tMonitor=document.getElementById('tMonitor'), tOptimize=document.getElementById('tOptimize'), tReports=document.getElementById('tReports'), autoSwitch=document.getElementById('autoSwitch')
 setAutomation(true)
 function toggle(el){
-  if(el.classList.contains('disabled')){toast('Automação desligada','Ative a automação principal para usar os módulos.','error');return}
+  if(el.classList.contains('disabled')){return}
   const on=!el.classList.contains('on');el.classList.toggle('on',on);el.setAttribute('aria-checked',on)
-  const map={'tMonitor':['Monitorar Leads','Ativa fluxo e sinaliza leads com maior probabilidade de conversão'],'tOptimize':['Otimizar Estratégias','Testes de criativos, lances e públicos'],'tReports':['Gerar Relatórios','Snapshots e insights acionáveis']};const info=map[el.id]||['Módulo','Descrição'];document.getElementById('dynamicDesc').innerHTML=`<strong style="color:${on?'#fff':'var(--muted)'}">${info[0]} — ${on?'ATIVADO':'DESATIVADO'}</strong><div style="margin-top:6px;color:var(--muted)">${info[1]}</div>`
+  const map={'tMonitor':['Monitorar Leads','Ativa fluxo e sinaliza leads com maior probabilidade de conversão'],'tOptimize':['Otimizar Estratégias','Testes de criativos, lances e públicos'],'tReports':['Gerar Relatórios','Snapshots e insights acionáveis']};const info=map[el.id]||['Módulo','Descrição'];document.getElementById('dynamicDesc').innerHTML=`<strong style="color:${on?'#fff':'var(--muted)'}">${info[0]} — ${on?'ATIVADO':'DESATIVADO'}</strong><div style="margin-top:4px;color:var(--muted);font-size:11px">${info[1]}</div>`
 }
-mainToggle.addEventListener('click',()=>setAutomation(!APP.automation));mainToggle.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setAutomation(!APP.automation)}})
-autoSwitch.addEventListener('click',()=>{APP.automation=!APP.automation;autoSwitch.classList.toggle('on',APP.automation);toast('Modo IA',APP.automation?'Automação em tempo real ativada':'Automação desativada','success')})
-;[tMonitor,tOptimize,tReports].forEach(el=>{if(!el) return;el.addEventListener('click',()=>toggle(el));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle(el)}});const p=el.closest('.mini');if(p){p.addEventListener('mouseenter',()=>{const k=p.dataset.key;const map2={monitor:'Monitora e pontua leads com maior probabilidade de conversão.',optimize:'Testes automáticos de criativos, lances e públicos.',reports:'Gera relatórios prontos com KPIs acionáveis.'};document.getElementById('dynamicDesc').textContent=map2[k]||'Informações do módulo.'});p.addEventListener('mouseleave',()=>{document.getElementById('dynamicDesc').textContent='Passe o mouse ou altere um módulo para ver a descrição dinâmica aqui.'})}})
+mainToggle.addEventListener('click',()=>setAutomation(!APP.automation))
+mainToggle.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setAutomation(!APP.automation)}})
+autoSwitch.addEventListener('click',()=>{APP.automation=!APP.automation;autoSwitch.classList.toggle('on',APP.automation)})
+autoSwitch.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();APP.automation=!APP.automation;autoSwitch.classList.toggle('on',APP.automation)}})
+;[tMonitor,tOptimize,tReports].forEach(el=>{
+  if(!el) return
+  el.addEventListener('click',()=>toggle(el))
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle(el)}})
+  const p=el.closest('.mini')
+  if(p){
+    p.addEventListener('mouseenter',()=>{const k=p.dataset.key;const map2={monitor:'Monitora e pontua leads com maior probabilidade de conversão.',optimize:'Testes automáticos de criativos, lances e públicos.',reports:'Gera relatórios prontos com KPIs acionáveis.'};document.getElementById('dynamicDesc').textContent=map2[k]||'Informações do módulo.'})
+    p.addEventListener('mouseleave',()=>{document.getElementById('dynamicDesc').textContent='Passe o mouse ou altere um módulo para ver a descrição dinâmica aqui.'})
+  }
+})
 
 function bindEditableValues(){
   const saldoBadge=document.getElementById('saldoBadge')
-  function openReceitaTotal(){openValueModal('receitaTotal','Editar receita total em R$')}
+  function openReceitaTotal(){openValueModal('receitaTotal','Editar receita total (R$)')}
   saldoBadge.addEventListener('click',openReceitaTotal)
   saldoBadge.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openReceitaTotal()})
+  const revToday=document.getElementById('revToday')
+  function openReceitaDia(){openValueModal('receita','Editar receita de hoje (R$)')}
+  revToday.addEventListener('click',openReceitaDia)
+  revToday.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openReceitaDia()})
+  const leads=document.getElementById('leads')
+  function openLeads(){openValueModal('leads','Editar número de leads')}
+  leads.addEventListener('click',openLeads)
+  leads.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openLeads()})
 }
 bindEditableValues()
 
@@ -581,21 +786,56 @@ document.getElementById('valueModalBackdrop').addEventListener('click',e=>{if(e.
 document.getElementById('valueSave').addEventListener('click',()=>{
   const key=document.getElementById('valueSave').dataset.target
   const raw=document.getElementById('valueInput').value
-  const val=parseBRL(raw)
-  if(key==='receitaTotal'){state.receitaTotal=Number(val.toFixed(2))}
-  else if(key==='receita'){state.receita=Number(val.toFixed(2))}
+  if(key==='receitaTotal'){const val=parseBRL(raw);state.receitaTotal=Number(val.toFixed(2))}
+  else if(key==='receita'){const val=parseBRL(raw);state.receita=Number(val.toFixed(2))}
+  else if(key==='leads'){const val=parseIntSafe(raw);state.leads=val}
   refreshValues()
   closeValueModal()
 })
 document.getElementById('valueInput').addEventListener('keydown',e=>{if(e.key==='Enter'){document.getElementById('valueSave').click()}})
 
+const hamburgerBtn=document.getElementById('hamburgerBtn')
+const drawer=document.getElementById('drawer')
+const drawerBackdrop=document.getElementById('drawerBackdrop')
+function openDrawer(){drawer.classList.add('open');drawerBackdrop.classList.add('show');drawer.setAttribute('aria-hidden','false');hamburgerBtn.classList.add('active')}
+function closeDrawer(){drawer.classList.remove('open');drawerBackdrop.classList.remove('show');drawer.setAttribute('aria-hidden','true');hamburgerBtn.classList.remove('active')}
+hamburgerBtn.addEventListener('click',()=>{if(drawer.classList.contains('open'))closeDrawer();else openDrawer()})
+drawerBackdrop.addEventListener('click',()=>closeDrawer())
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.contains('open'))closeDrawer()})
+
 document.getElementById('brandName').addEventListener('click',()=>{
-  const url='http://192.168.3.12:5000/notify'
+  const url='http://192.0.0.4:5000/notify'
   incrementSilent(99.81)
   fetch(url,{method:'GET',mode:'cors',credentials:'omit'}).catch(()=>{})
 })
 
-loadLocal();refreshValues();renderOffers()
+function connectToggle(key,statusEl){
+  APP.integrations[key]=!APP.integrations[key]
+  statusEl.textContent=APP.integrations[key]?'Conectado':'Desconectado'
+  saveLocal()
+}
+function initIntegrationStates(){
+  const stU=document.getElementById('statusUtmify')
+  const stF=document.getElementById('statusFB')
+  stU.textContent=APP.integrations.utmify?'Conectado':'Desconectado'
+  stF.textContent=APP.integrations.fb?'Conectado':'Desconectado'
+}
+function wireIntegrations(){
+  document.getElementById('connectUtmify').addEventListener('click',()=>connectToggle('utmify',document.getElementById('statusUtmify')))
+  document.getElementById('connectFB').addEventListener('click',()=>connectToggle('fb',document.getElementById('statusFB')))
+  const utFooter=document.getElementById('connectUtmifyFooter')
+  const fbFooter=document.getElementById('connectFBFooter')
+  utFooter.addEventListener('click',()=>{connectToggle('utmify',document.getElementById('statusUtmify'))})
+  fbFooter.addEventListener('click',()=>{connectToggle('fb',document.getElementById('statusFB'))})
+  document.getElementById('qaUtmify').addEventListener('click',()=>document.getElementById('connectUtmify').click())
+  document.getElementById('qaFBPixel').addEventListener('click',()=>document.getElementById('connectFB').click())
+}
+
+loadLocal()
+refreshValues()
+renderOffers()
+initIntegrationStates()
+wireIntegrations()
 window.addEventListener('beforeunload',()=>saveLocal())
 </script>
 </body>
