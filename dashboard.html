@@ -284,6 +284,28 @@ textarea{min-height:70px;resize:vertical}
 @media(min-width:768px){
   .integration-bar{justify-content:flex-end}
 }
+.op-status{
+  display:none;
+  align-items:center;
+  gap:8px;
+  padding:6px 12px;
+  border-radius:999px;
+  font-weight:900;
+  font-size:11px;
+  letter-spacing:.4px;
+  background:rgba(18,18,20,.9);
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 10px 24px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,0.02);
+  color:#eaf4ff;
+}
+.op-status.on{display:inline-flex}
+.op-status .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#00e676;
+  box-shadow:0 0 10px rgba(0,230,118,0.9),0 0 20px rgba(0,230,118,0.45);
+  animation:blink 1s infinite steps(2,end);
+}
+@keyframes blink{50%{opacity:.65}}
 </style>
 </head>
 <body>
@@ -296,7 +318,9 @@ textarea{min-height:70px;resize:vertical}
       </button>
       <div id="brandName" class="brand-title">Sellmyfy</div>
     </div>
-    <div class="tb-right"></div>
+    <div class="tb-right">
+      <div id="opStatus" class="op-status" aria-live="polite"><span class="dot"></span><span>Sistema em operação</span></div>
+    </div>
   </div>
 
   <aside class="drawer" id="drawer" aria-hidden="true">
@@ -327,7 +351,7 @@ textarea{min-height:70px;resize:vertical}
         <div class="kpis" aria-hidden="false">
           <div class="kpi"><strong id="revToday" class="value-badge" tabindex="0" role="button" aria-label="Editar receita">R$ 2.430,00</strong><div class="small">Receita Hoje</div></div>
           <div class="kpi"><strong id="leads" class="value-badge" tabindex="0" role="button" aria-label="Editar leads">1.292</strong><div class="small">Leads</div></div>
-          <div class="kpi"><strong id="conv">87%</strong><div class="small">Conversão</div></div>
+          <div class="kpi"><strong id="conv" class="value-badge" tabindex="0" role="button" aria-label="Editar visualizações">7291</strong><div class="small">Visualizações na página de destino</div></div>
         </div>
       </div>
 
@@ -559,12 +583,12 @@ function parseIntSafe(str){
 }
 function saveLocal(){
   localStorage.setItem('sellmyfy_offers',JSON.stringify(APP.offers))
-  localStorage.setItem('sellmyfy_state',JSON.stringify({receitaTotal:state.receitaTotal,receita:state.receita,leads:state.leads}))
+  localStorage.setItem('sellmyfy_state',JSON.stringify({receitaTotal:state.receitaTotal,receita:state.receita,leads:state.leads,conv:state.conv}))
   localStorage.setItem('sellmyfy_integrations',JSON.stringify(APP.integrations))
 }
 function loadLocal(){
   const d=localStorage.getItem('sellmyfy_offers');if(d){try{APP.offers=JSON.parse(d)}catch(e){APP.offers=[]}}
-  const s=localStorage.getItem('sellmyfy_state');if(s){try{const o=JSON.parse(s);if(typeof o.receitaTotal!=='undefined') state.receitaTotal=Number(o.receitaTotal);else if(typeof o.saldo!=='undefined') state.receitaTotal=Number(o.saldo);if(typeof o.receita!=='undefined') state.receita=Number(o.receita);if(typeof o.leads!=='undefined') state.leads=parseIntSafe(o.leads)}catch(e){}}
+  const s=localStorage.getItem('sellmyfy_state');if(s){try{const o=JSON.parse(s);if(typeof o.receitaTotal!=='undefined') state.receitaTotal=Number(o.receitaTotal);else if(typeof o.saldo!=='undefined') state.receitaTotal=Number(o.saldo);if(typeof o.receita!=='undefined') state.receita=Number(o.receita);if(typeof o.leads!=='undefined') state.leads=parseIntSafe(o.leads);if(typeof o.conv!=='undefined') state.conv=parseIntSafe(o.conv)}catch(e){}}
   const i=localStorage.getItem('sellmyfy_integrations');if(i){try{const o=JSON.parse(i);APP.integrations.utmify=!!o.utmify;APP.integrations.fb=!!o.fb}catch(e){}}
 }
 function uid(){return'of-'+Math.random().toString(36).slice(2,9)}
@@ -609,8 +633,8 @@ function openValueModal(targetKey,label){
   setTimeout(()=>document.querySelector('#valueModalBackdrop .modal').classList.add('open'),10)
   document.getElementById('valueModalTitle').textContent='Editar Valor'
   document.getElementById('valueModalSubtitle').textContent=label
-  const v=(targetKey==='receitaTotal')?state.receitaTotal:(targetKey==='receita'?state.receita:state.leads)
-  document.getElementById('valueInput').value=(targetKey==='leads')?String(v):currency(v)
+  const v=(targetKey==='receitaTotal')?state.receitaTotal:(targetKey==='receita')?state.receita:(targetKey==='leads')?state.leads:state.conv
+  document.getElementById('valueInput').value=(targetKey==='leads'||targetKey==='conv')?String(v):currency(v)
   document.getElementById('valueInput').focus()
   document.getElementById('valueSave').dataset.target=targetKey
 }
@@ -723,11 +747,12 @@ document.getElementById('filterInput').addEventListener('input',e=>{
   renderOffers(filtered)
 })
 
-const state={receitaTotal:13173.82,receita:2430.00,leads:1292}
+const state={receitaTotal:13173.82,receita:2430.00,leads:1292,conv:7291}
 function refreshValues(){
   document.getElementById('saldoValue').textContent=currency(state.receitaTotal)
   document.getElementById('revToday').textContent=currency(state.receita)
   document.getElementById('leads').textContent=String(state.leads)
+  document.getElementById('conv').textContent=String(state.conv)
   document.getElementById('lastUpdate').textContent=new Date().toLocaleDateString('pt-BR')
   saveLocal()
 }
@@ -742,6 +767,9 @@ function setAutomation(on){
   mainToggle.setAttribute('aria-checked',!!on)
   document.getElementById('mainStatus').textContent=!!on?'ATIVADA':'DESATIVADA'
   ;[tMonitor,tOptimize,tReports].forEach(x=>{if(x)x.classList.toggle('disabled',!on)})
+  const os=document.getElementById('opStatus')
+  os.classList.toggle('on',!!on)
+  os.querySelector('span:last-child').textContent=!!on?'Sistema em operação':'Sistema em pausa'
 }
 const mainToggle=document.getElementById('mainToggle'), tMonitor=document.getElementById('tMonitor'), tOptimize=document.getElementById('tOptimize'), tReports=document.getElementById('tReports'), autoSwitch=document.getElementById('autoSwitch')
 setAutomation(true)
@@ -752,8 +780,8 @@ function toggle(el){
 }
 mainToggle.addEventListener('click',()=>setAutomation(!APP.automation))
 mainToggle.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();setAutomation(!APP.automation)}})
-autoSwitch.addEventListener('click',()=>{APP.automation=!APP.automation;autoSwitch.classList.toggle('on',APP.automation)})
-autoSwitch.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();APP.automation=!APP.automation;autoSwitch.classList.toggle('on',APP.automation)}})
+autoSwitch.addEventListener('click',()=>{APP.automation=!APP.automation;autoSwitch.classList.toggle('on',APP.automation);setAutomation(APP.automation)})
+autoSwitch.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();APP.automation=!APP.automation;autoSwitch.classList.toggle('on',APP.automation);setAutomation(APP.automation)}})
 ;[tMonitor,tOptimize,tReports].forEach(el=>{
   if(!el) return
   el.addEventListener('click',()=>toggle(el))
@@ -778,6 +806,10 @@ function bindEditableValues(){
   function openLeads(){openValueModal('leads','Editar número de leads')}
   leads.addEventListener('click',openLeads)
   leads.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openLeads()})
+  const conv=document.getElementById('conv')
+  function openConv(){openValueModal('conv','Editar visualizações da página de destino')}
+  conv.addEventListener('click',openConv)
+  conv.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')openConv()})
 }
 bindEditableValues()
 
@@ -789,6 +821,7 @@ document.getElementById('valueSave').addEventListener('click',()=>{
   if(key==='receitaTotal'){const val=parseBRL(raw);state.receitaTotal=Number(val.toFixed(2))}
   else if(key==='receita'){const val=parseBRL(raw);state.receita=Number(val.toFixed(2))}
   else if(key==='leads'){const val=parseIntSafe(raw);state.leads=val}
+  else if(key==='conv'){const val=parseIntSafe(raw);state.conv=val}
   refreshValues()
   closeValueModal()
 })
