@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY app.py .
 COPY index.html .
+COPY dashboard.html .
 
 RUN pip install flask
 
