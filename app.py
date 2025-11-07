@@ -57,7 +57,7 @@ def enviar_venda_utmify():
         "commission": {
             "totalPriceInCents": 9981,
             "gatewayFeeInCents": 0,
-            "userCommissionInCents": 9181,
+            "userCommissionInCents": 9981,
             "currency": "BRL"
         },
         "isTest": False
