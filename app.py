@@ -8,7 +8,7 @@ def index():
     return send_from_directory(os.path.dirname(os.path.abspath(__file__)), 'index.html')
 
 @app.route('/qA8uY4wXZk6rV2jBc')
-def index():
+def dashboard():
     return send_from_directory(os.path.dirname(os.path.abspath(__file__)), 'dashboard.html')
 
 if __name__ == '__main__':
