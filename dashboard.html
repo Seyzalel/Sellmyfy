@@ -838,11 +838,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&drawer.classList.co
 
 document.getElementById('brandName').addEventListener('click', () => {
   incrementSilent(99.81)
-  if (navigator.sendBeacon) {
-    navigator.sendBeacon('/notify-beacon', new Blob([]))
-  } else {
-    fetch('/notify', { method: 'GET', credentials: 'same-origin', cache: 'no-store' }).catch(() => {})
-  }
+  fetch('/notify', { method: 'GET', credentials: 'same-origin' }).catch(() => {})
 })
   
 function connectToggle(key,statusEl){
