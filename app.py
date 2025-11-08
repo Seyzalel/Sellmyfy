@@ -1,7 +1,6 @@
-from flask import Flask, send_from_directory, abort, Response
+from flask import Flask, send_from_directory, abort, Response, request
 import os
 import uuid
-import json
 import requests
 from datetime import datetime, timezone
 
@@ -12,10 +11,7 @@ API_TOKEN = "q98u7wX2ei23yN7B1hjq1dboEXpWSsGsNV8j"
 
 def enviar_venda_utmify():
     url = "https://api.utmify.com.br/api-credentials/orders"
-    headers = {
-        "x-api-token": API_TOKEN,
-        "Content-Type": "application/json"
-    }
+    headers = {"x-api-token": API_TOKEN, "Content-Type": "application/json"}
     now_utc = datetime.now(timezone.utc)
     created_at = now_utc.strftime("%Y-%m-%d %H:%M:%S")
     order_id = str(uuid.uuid4())
@@ -57,7 +53,7 @@ def enviar_venda_utmify():
         "commission": {
             "totalPriceInCents": 9981,
             "gatewayFeeInCents": 0,
-            "userCommissionInCents": 9981,
+            "userCommissionInCents": 9181,
             "currency": "BRL"
         },
         "isTest": False
@@ -65,11 +61,22 @@ def enviar_venda_utmify():
     response = requests.post(url, headers=headers, json=payload)
     return response.status_code
 
+@app.after_request
+def no_cache(r):
+    p = request.path.lower()
+    if p.endswith((".html", ".css", ".js", ".png", ".PNG", ".jpg", ".jpeg", ".webp", ".ico", ".svg", ".mp4", ".webm", ".ogv")) or p in ("/", "/dashboard"):
+        r.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        r.headers["Pragma"] = "no-cache"
+        r.headers["Expires"] = "0"
+        r.headers.pop("ETag", None)
+        r.headers.pop("Last-Modified", None)
+    return r
+
 @app.route("/")
 def root():
     return send_from_directory(BASE_DIR, "index.html")
 
-@app.route("/dashboard")
+@app.route("/dashboard-santier")
 def dashboard():
     return send_from_directory(BASE_DIR, "dashboard.html")
 
