@@ -1,7 +1,8 @@
-from flask import Flask, send_from_directory, abort, Response, request
+from flask import Flask, send_from_directory, request, Response, abort
 import os
 import uuid
 import requests
+import mimetypes
 from datetime import datetime, timezone
 
 app = Flask(__name__)
@@ -58,46 +59,83 @@ def enviar_venda_utmify():
         },
         "isTest": False
     }
-    response = requests.post(url, headers=headers, json=payload)
-    return response.status_code
+    r = requests.post(url, headers=headers, json=payload, timeout=10)
+    return r.status_code
 
 @app.after_request
 def no_cache(r):
     p = request.path.lower()
-    if p.endswith((".html", ".css", ".js", ".png", ".PNG", ".jpg", ".jpeg", ".webp", ".ico", ".svg", ".mp4", ".webm", ".ogv")) or p in ("/", "/dashboard"):
-        r.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    if p.endswith((".html", ".css", ".js", ".png", ".jpg", ".jpeg", ".webp", ".ico", ".svg", ".mp4", ".webm", ".ogv")) or p in ("/", "/dashboard"):
+        r.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0, s-maxage=0, private"
         r.headers["Pragma"] = "no-cache"
         r.headers["Expires"] = "0"
+        r.headers["Surrogate-Control"] = "no-store"
+        r.headers["Vary"] = "*"
         r.headers.pop("ETag", None)
         r.headers.pop("Last-Modified", None)
     return r
+
+def stream_range(path, mime):
+    size = os.path.getsize(path)
+    start = 0
+    end = size - 1
+    rng = request.headers.get("Range")
+    if rng and rng.startswith("bytes="):
+        s = rng.replace("bytes=", "").split("-", 1)
+        if s[0].strip() != "":
+            start = int(s[0])
+        if len(s) > 1 and s[1].strip() != "":
+            end = int(s[1])
+        if end >= size:
+            end = size - 1
+        length = end - start + 1
+        with open(path, "rb") as f:
+            f.seek(start)
+            data = f.read(length)
+        res = Response(data, 206, mimetype=mime, direct_passthrough=True)
+        res.headers["Content-Range"] = f"bytes {start}-{end}/{size}"
+        res.headers["Accept-Ranges"] = "bytes"
+        res.headers["Content-Length"] = str(length)
+        return res
+    with open(path, "rb") as f:
+        data = f.read()
+    res = Response(data, 200, mimetype=mime, direct_passthrough=True)
+    res.headers["Content-Length"] = str(size)
+    res.headers["Accept-Ranges"] = "bytes"
+    return res
 
 @app.route("/")
 def root():
     return send_from_directory(BASE_DIR, "index.html")
 
-@app.route("/dashboard-santier")
+@app.route("/dashboard")
 def dashboard():
     return send_from_directory(BASE_DIR, "dashboard.html")
 
 @app.route("/notify", methods=["GET"])
 def notify():
     status = enviar_venda_utmify()
-    return Response(status=status)
+    body = f'{{"upstream_status": {status}}}'
+    return Response(body, status=200, mimetype="application/json")
 
-@app.route("/favicon.ico")
-def favicon():
-    path = os.path.join(BASE_DIR, "favicon.ico")
-    if os.path.isfile(path):
-        return send_from_directory(BASE_DIR, "favicon.ico")
-    return Response(status=204)
+@app.route("/media/<path:filename>")
+def media(filename):
+    path = os.path.join(BASE_DIR, filename)
+    if not os.path.isfile(path):
+        abort(404)
+    mime = mimetypes.guess_type(path)[0] or "application/octet-stream"
+    return stream_range(path, mime)
 
 @app.route("/<path:filename>")
 def any_file(filename):
     path = os.path.join(BASE_DIR, filename)
     if os.path.isfile(path):
+        ext = os.path.splitext(filename)[1].lower()
+        if ext in (".mp4", ".webm", ".ogv"):
+            mime = mimetypes.guess_type(path)[0] or "application/octet-stream"
+            return stream_range(path, mime)
         return send_from_directory(BASE_DIR, filename)
     abort(404)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8080)
+    app.run(host="0.0.0.0", port=8080, threaded=True)
